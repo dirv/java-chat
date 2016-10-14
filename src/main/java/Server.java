@@ -2,22 +2,25 @@ package main.java;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
+
+import main.java.commands.Command;
+import main.java.commands.RegisterUserCommand;
+import main.java.commands.SaveMessageCommand;
 
 public class Server {
 
     private final ServerSocketFactory serverSocketFactory;
-    private final List<String> users;
-    private final MessageRepository messageRepository;
-
+    private final List<Command> commands = new ArrayList<Command>();
+    
     public Server(ServerSocketFactory serverSocketFactory, List<String> users, MessageRepository messageRepository) {
         this.serverSocketFactory = serverSocketFactory;
-        this.users = users;
-        this.messageRepository = messageRepository;
+        commands.add(new RegisterUserCommand(users));
+        commands.add(new SaveMessageCommand(messageRepository));
     }
 
     public void startListening() {
@@ -29,21 +32,23 @@ public class Server {
                         = new BufferedReader(
                                 new InputStreamReader(
                                         socket.getInputStream()))) {
-                    String messageType = bufferedReader.readLine();
-                    if (messageType != null) {
-                        String user = bufferedReader.readLine();
-                        if (messageType.equals("1")) {
-                            users.add(user);
-                        }
-                        if (messageType.equals("2")) {
-                            String message = bufferedReader.readLine();
-                            messageRepository.receiveMessage(user,  message);
-                        }
+                    String commandType = bufferedReader.readLine();
+                    if (commandType != null) {
+                        findCommand(commandType).execute(bufferedReader);
                     }
                 }
             }
         } catch (IOException ex) {
             throw new RuntimeException();
         }
+    }
+    
+    private Command findCommand(String commandType) {
+        for (Command c : commands) {
+            if (c.respondsTo(commandType)) {
+                return c;
+            }
+        }
+        return null;
     }
 }
