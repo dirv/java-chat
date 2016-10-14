@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import main.java.MessageRepository;
 
-public class SaveMessageCommand extends Command {
+public class SaveMessageCommand extends RecognizedCommand {
 
     private final MessageRepository messageRepository;
 

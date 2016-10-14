@@ -67,6 +67,13 @@ public class ServerTest {
         assertEquals(0, users.size());
     }
     
+    @Test
+    public void ignoresUnrecognizedCommands() {
+        SocketStub client = new SocketStub("x\n");
+        serverSocketFactory.addClient(client);
+        startListening();
+    }
+
     private void startListening() {
         Server server = new Server(serverSocketFactory, users, messageRepository);
         server.startListening();

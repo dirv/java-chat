@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
-public class RegisterUserCommand extends Command {
+public class RegisterUserCommand extends RecognizedCommand {
 
     private final List<String> users;
 

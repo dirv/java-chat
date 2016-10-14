@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.java.commands.Command;
+import main.java.commands.RecognizedCommand;
 import main.java.commands.RegisterUserCommand;
 import main.java.commands.SaveMessageCommand;
+import main.java.commands.UnknownCommand;
 
 public class Server {
 
@@ -21,6 +23,7 @@ public class Server {
         this.serverSocketFactory = serverSocketFactory;
         commands.add(new RegisterUserCommand(users));
         commands.add(new SaveMessageCommand(messageRepository));
+        commands.add(new UnknownCommand());
     }
 
     public void startListening() {
