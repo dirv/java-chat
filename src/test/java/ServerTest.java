@@ -8,17 +8,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.Message;
 import main.java.Server;
 
 public class ServerTest {
 
     private ServerSocketFactoryStub serverSocketFactory = new ServerSocketFactoryStub();
     private List<String> users = new ArrayList<String>();
+    private List<Message> messages = new ArrayList<Message>();
 
     @Test
     public void listensOnPort3000() throws IOException {
-        Server server = new Server(serverSocketFactory, users);
-        server.startListening();
+        startListening();
         assertEquals(3000, serverSocketFactory.getPort());
     }
     
@@ -26,8 +27,7 @@ public class ServerTest {
     public void acceptsASocket() throws IOException {
         SocketStub client = new SocketStub();
         serverSocketFactory.addClient(client);
-        Server server = new Server(serverSocketFactory, users);
-        server.startListening();
+        startListening();
         assertEquals(1, serverSocketFactory.acceptedSockets.size());
         assertEquals(client, serverSocketFactory.acceptedSockets.get(0));
     }
@@ -36,8 +36,23 @@ public class ServerTest {
     public void connectsANewClient() throws IOException {
         SocketStub client = new SocketStub("1\nDonald\n");
         serverSocketFactory.addClient(client);
-        Server server = new Server(serverSocketFactory, users);
-        server.startListening();
+        startListening();
         assertThat(users, hasItem("Donald"));
+    }
+    
+    @Test
+    public void receiveMessages() throws IOException {
+        users.add("Donald");
+        SocketStub client = new SocketStub("2\nDonald\nHello, world!\n");
+        serverSocketFactory.addClient(client);
+        startListening();
+        assertEquals(1, messages.size());
+        assertEquals("Donald", messages.get(0).getUser());
+        assertEquals("Hello, world!", messages.get(0).getMessage());
+    }
+    
+    private void startListening() {
+        Server server = new Server(serverSocketFactory, users, messages);
+        server.startListening();
     }
 }

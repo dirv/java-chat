@@ -12,10 +12,12 @@ public class Server {
 
     private final ServerSocketFactory serverSocketFactory;
     private final List<String> users;
+    private final List<Message> messages;
 
-    public Server(ServerSocketFactory serverSocketFactory, List<String> users) {
+    public Server(ServerSocketFactory serverSocketFactory, List<String> users, List<Message> messages) {
         this.serverSocketFactory = serverSocketFactory;
         this.users = users;
+        this.messages = messages;
     }
 
     public void startListening() {
@@ -28,7 +30,10 @@ public class Server {
                                 new InputStreamReader(
                                         socket.getInputStream()))) {
                     bufferedReader.readLine();
-                    users.add(bufferedReader.readLine());
+                    String user = bufferedReader.readLine();
+                    users.add(user);
+                    String message = bufferedReader.readLine();
+                    messages.add(new Message(user, message));
                 }
             }
         } catch (IOException ex) {
