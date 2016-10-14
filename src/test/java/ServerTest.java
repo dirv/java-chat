@@ -15,7 +15,7 @@ public class ServerTest {
 
     private ServerSocketFactoryStub serverSocketFactory = new ServerSocketFactoryStub();
     private List<String> users = new ArrayList<String>();
-    private List<Message> messages = new ArrayList<Message>();
+    private MessageRepositorySpy messageRepository = new MessageRepositorySpy();
 
     @Test
     public void listensOnPort3000() throws IOException {
@@ -46,13 +46,13 @@ public class ServerTest {
         SocketStub client = new SocketStub("2\nDonald\nHello, world!\n");
         serverSocketFactory.addClient(client);
         startListening();
-        assertEquals(1, messages.size());
-        assertEquals("Donald", messages.get(0).getUser());
-        assertEquals("Hello, world!", messages.get(0).getMessage());
+        assertNotNull(messageRepository.getLastMessage());
+        assertEquals("Donald", messageRepository.getLastMessage().getUser());
+        assertEquals("Hello, world!", messageRepository.getLastMessage().getMessage());
     }
     
     private void startListening() {
-        Server server = new Server(serverSocketFactory, users, messages);
+        Server server = new Server(serverSocketFactory, users, messageRepository);
         server.startListening();
     }
 }
