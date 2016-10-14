@@ -13,6 +13,7 @@ public class SaveMessageCommand extends RecognizedCommand {
         super("2");
         this.messageRepository = messageRepository;
     }
+
     @Override
     public void execute(BufferedReader reader) throws IOException {
         String user = reader.readLine();

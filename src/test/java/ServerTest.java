@@ -25,8 +25,7 @@ public class ServerTest {
     
     @Test
     public void acceptsASocket() throws IOException {
-        SocketStub client = new SocketStub();
-        serverSocketFactory.addClient(client);
+        SocketStub client = sendClientMessage("");
         startListening();
         assertEquals(1, serverSocketFactory.acceptedSockets.size());
         assertEquals(client, serverSocketFactory.acceptedSockets.get(0));
@@ -34,8 +33,7 @@ public class ServerTest {
     
     @Test
     public void connectsANewClient() throws IOException {
-        SocketStub client = new SocketStub("1\nDonald\n");
-        serverSocketFactory.addClient(client);
+        sendClientMessage("1\nDonald\n");
         startListening();
         assertThat(users, hasItem("Donald"));
     }
@@ -43,8 +41,7 @@ public class ServerTest {
     @Test
     public void receiveMessages() throws IOException {
         users.add("Donald");
-        SocketStub client = new SocketStub("2\nDonald\nHello, world!\n");
-        serverSocketFactory.addClient(client);
+        sendClientMessage("2\nDonald\nHello, world!\n");
         startListening();
         assertNotNull(messageRepository.getLastMessage());
         assertEquals("Donald", messageRepository.getLastMessage().getUser());
@@ -53,25 +50,28 @@ public class ServerTest {
     
     @Test
     public void doNotSendAMessageOnUserRegistration() throws IOException {
-        SocketStub client = new SocketStub("1\nDonald\n");
-        serverSocketFactory.addClient(client);
+        sendClientMessage("1\nDonald\n");
         startListening();
         assertNull(messageRepository.getLastMessage());
     }
     
     @Test
     public void doNotAddAUserOnMessageSend() {
-        SocketStub client = new SocketStub("2\nDonald\nHello, world!");
-        serverSocketFactory.addClient(client);
+        sendClientMessage("2\nDonald\nHello, world!");
         startListening();
         assertEquals(0, users.size());
     }
     
     @Test
     public void ignoresUnrecognizedCommands() {
-        SocketStub client = new SocketStub("x\n");
-        serverSocketFactory.addClient(client);
+        sendClientMessage("x\n");
         startListening();
+    }
+    
+    private SocketStub sendClientMessage(String message) {
+        SocketStub client = new SocketStub(message);
+        serverSocketFactory.addClient(client);
+        return client;
     }
 
     private void startListening() {
