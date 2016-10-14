@@ -25,7 +25,7 @@ public class ServerSocketFactoryStub implements ServerSocketFactory {
             @Override
             public Socket accept() throws IOException {
                 if (remainingSockets.isEmpty())
-                    throw new IOException();
+                    return null;
                 Socket nextSocket = remainingSockets.remove(0);
                 acceptedSockets.add(nextSocket);
                 return nextSocket;
