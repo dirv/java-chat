@@ -51,6 +51,22 @@ public class ServerTest {
         assertEquals("Hello, world!", messageRepository.getLastMessage().getMessage());
     }
     
+    @Test
+    public void doNotSendAMessageOnUserRegistration() throws IOException {
+        SocketStub client = new SocketStub("1\nDonald\n");
+        serverSocketFactory.addClient(client);
+        startListening();
+        assertNull(messageRepository.getLastMessage());
+    }
+    
+    @Test
+    public void doNotAddAUserOnMessageSend() {
+        SocketStub client = new SocketStub("2\nDonald\nHello, world!");
+        serverSocketFactory.addClient(client);
+        startListening();
+        assertEquals(0, users.size());
+    }
+    
     private void startListening() {
         Server server = new Server(serverSocketFactory, users, messageRepository);
         server.startListening();

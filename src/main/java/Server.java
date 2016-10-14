@@ -29,11 +29,17 @@ public class Server {
                         = new BufferedReader(
                                 new InputStreamReader(
                                         socket.getInputStream()))) {
-                    bufferedReader.readLine();
-                    String user = bufferedReader.readLine();
-                    users.add(user);
-                    String message = bufferedReader.readLine();
-                    messageRepository.receiveMessage(user,  message);
+                    String messageType = bufferedReader.readLine();
+                    if (messageType != null) {
+                        String user = bufferedReader.readLine();
+                        if (messageType.equals("1")) {
+                            users.add(user);
+                        }
+                        if (messageType.equals("2")) {
+                            String message = bufferedReader.readLine();
+                            messageRepository.receiveMessage(user,  message);
+                        }
+                    }
                 }
             }
         } catch (IOException ex) {
