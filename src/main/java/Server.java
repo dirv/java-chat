@@ -1,6 +1,7 @@
 package main.java;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 
 public class Server {
 
@@ -12,11 +13,10 @@ public class Server {
 
     public void startListening() {
         try {
-            serverSocketFactory.buildServerSocket(3000);
+            ServerSocket serverSocket = serverSocketFactory.buildServerSocket(3000);
+            serverSocket.accept();
         } catch (IOException ex)  {
             
         }
-        
     }
-
 }

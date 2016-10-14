@@ -3,29 +3,29 @@ package test.java;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 
 import org.junit.Test;
 
 import main.java.Server;
-import main.java.ServerSocketFactory;
 
 public class ServerTest {
 
-    private ServerSocketSpy serverSocketSpy;
-    private ServerSocketFactory serverSocketFactory = new ServerSocketFactory() {
-        @Override
-        public ServerSocket buildServerSocket(int port) throws IOException {
-            return serverSocketSpy = new ServerSocketSpy(port);
-        }
-        
-    };
+    private ServerSocketFactoryStub serverSocketFactory = new ServerSocketFactoryStub();
 
     @Test
     public void listensOnPort3000() throws IOException {
         Server server = new Server(serverSocketFactory);
         server.startListening();
-        assertNotNull(serverSocketSpy);
-        assertEquals(3000, serverSocketSpy.port);
+        assertEquals(3000, serverSocketFactory.getPort());
+    }
+    
+    @Test
+    public void acceptsASocket() throws IOException {
+        SocketSpy client = new SocketSpy();
+        serverSocketFactory.addClient(client);
+        Server server = new Server(serverSocketFactory);
+        server.startListening();
+        assertEquals(1, serverSocketFactory.acceptedSockets.size());
+        assertEquals(client, serverSocketFactory.acceptedSockets.get(0));
     }
 }
