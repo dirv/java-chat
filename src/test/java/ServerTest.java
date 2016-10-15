@@ -73,7 +73,27 @@ public class ServerTest {
         startListening();
         assertEquals("OK\n", client.getOutput());
     }
+
+    @Test
+    public void sendMessagesFromTimestamp() {
+        addMessage(100, "Donald", "Hello, world!");
+        addMessage(200, "Donald", "Hello?");
+        SocketStub client = sendClientMessage("3\n2\n");
+        startListening();
+        assertEquals(
+        "100\n" +
+        "Donald\n" +
+        "Hello, world!\n" +
+        "200\n" +
+        "Donald\n" +
+        "Hello?\n",
+                client.getOutput());
+    }
     
+    private void addMessage(long timestamp, String name, String message) {
+        messageRepository.add(timestamp, name, message);
+        
+    }
     private SocketStub sendClientMessage(String message) {
         SocketStub client = new SocketStub(message);
         serverSocketFactory.addClient(client);

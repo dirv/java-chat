@@ -6,20 +6,20 @@ import java.io.PrintWriter;
 
 import main.java.MessageRepository;
 
-public class SaveMessageCommand extends RecognizedCommand {
+public class RelayMessagesCommand extends RecognizedCommand {
 
     private final MessageRepository messageRepository;
 
-    public SaveMessageCommand(MessageRepository messageRepository) {
-        super("2");
+    public RelayMessagesCommand(MessageRepository messageRepository) {
+        super("3");
         this.messageRepository = messageRepository;
     }
 
     @Override
     public void execute(BufferedReader reader, PrintWriter printWriter) throws IOException {
-        String user = reader.readLine();
-        String message = reader.readLine();
-        messageRepository.receiveMessage(user,  message);
-        printWriter.println("OK");
+        long timestamp = Long.parseLong(reader.readLine());
+        messageRepository
+            .getMessagesSince(timestamp)
+            .forEach(m -> printWriter.print(m.asResponseString()));
     }
 }

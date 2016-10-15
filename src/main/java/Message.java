@@ -2,12 +2,18 @@ package main.java;
 
 public class Message {
 
+    private final long timestamp;
     private final String user;
     private final String message;
 
-    public Message(String user, String message) {
+    public Message(long timestamp, String user, String message) {
+        this.timestamp = timestamp;
         this.user = user;
         this.message = message;
+    }
+    
+    public long getTimestamp() {
+        return timestamp;
     }
     
     public String getUser() {
@@ -16,5 +22,11 @@ public class Message {
     
     public String getMessage() {
         return message;
+    }
+
+    public String asResponseString() {
+        return timestamp + "\n" +
+            user + "\n" +
+            message + "\n";
     }
 }
