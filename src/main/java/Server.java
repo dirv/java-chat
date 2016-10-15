@@ -30,29 +30,36 @@ public class Server {
         commands.add(new UnknownCommand());
     }
 
-    public void startListening() {
+    public void listen() {
         try {
             ServerSocket serverSocket = serverSocketFactory.buildServerSocket(3000);
             Socket socket;
             while((socket = serverSocket.accept()) != null) {
-                try(BufferedReader bufferedReader
-                        = new BufferedReader(
-                                new InputStreamReader(
-                                        socket.getInputStream()))) {
-                    try(PrintWriter printWriter
-                            = new PrintWriter(
-                                    new BufferedWriter(
-                                            new OutputStreamWriter(
-                                            socket.getOutputStream())))) {
-                        String commandType = bufferedReader.readLine();
-
-                        findCommand(commandType).execute(bufferedReader, printWriter);
-                    }
-                }
+                handleSocket(socket);
             }
         } catch (IOException ex) {
             throw new RuntimeException();
         }
+    }
+    
+    private void handleSocket(Socket socket) throws IOException {
+        try(BufferedReader bufferedReader = bufferedReader(socket);
+            PrintWriter printWriter = printWriter(socket)) {
+
+            String commandType = bufferedReader.readLine();
+            findCommand(commandType).execute(bufferedReader, printWriter);
+        }
+    }
+    
+    private static BufferedReader bufferedReader(Socket socket) throws IOException {
+        return new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    }
+    
+    private static PrintWriter printWriter(Socket socket) throws IOException {
+        return new PrintWriter(
+                new BufferedWriter(
+                        new OutputStreamWriter(socket.getOutputStream())));
+        
     }
     
     private Command findCommand(String commandType) {
