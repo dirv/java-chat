@@ -16,8 +16,23 @@ public class RegisterUserCommand extends RecognizedCommand {
 
     @Override
     public void execute(BufferedReader reader, PrintWriter printWriter) throws IOException {
-        users.add(reader.readLine());
-        printWriter.println("OK");
+        String user = reader.readLine();
+
+        boolean added = attemptAdd(user);
+        if(added) {
+            printWriter.println("OK");
+        } else {
+            printWriter.println("ERROR");
+        }
+    }
+    
+    private boolean attemptAdd(String user) {
+        if (user == null) return false;
+        user = user.trim();
+        if (user.isEmpty()) return false;
+        if (users.contains(user)) return false;
+        users.add(user);
+        return true;
     }
 
 }
