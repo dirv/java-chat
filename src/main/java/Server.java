@@ -25,7 +25,7 @@ public class Server {
     public Server(ServerSocketFactory serverSocketFactory, List<String> users, MessageRepository messageRepository) {
         this.serverSocketFactory = serverSocketFactory;
         commands.add(new RegisterUserCommand(users));
-        commands.add(new SaveMessageCommand(messageRepository));
+        commands.add(new SaveMessageCommand(messageRepository, users));
         commands.add(new RelayMessagesCommand(messageRepository));
         commands.add(new UnknownCommand());
     }
