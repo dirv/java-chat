@@ -20,6 +20,7 @@ public class SaveMessageCommand extends RecognizedCommand {
         String user = reader.readLine();
         String message = reader.readLine();
         messageRepository.receiveMessage(user,  message);
+        printWriter.println("OK");
     }
 
 }
