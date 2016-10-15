@@ -8,6 +8,7 @@ import java.io.OutputStream;
 
 import org.junit.Test;
 
+import main.java.Message;
 import main.java.commands.Command;
 import main.java.commands.SaveMessageCommand;
 import test.java.MessageRepositorySpy;
@@ -21,8 +22,9 @@ public class SaveMessageCommandTest extends CommandTest {
     @Test
     public void savesMessage() throws IOException {
        executeCommand("Donald\nHello, world!");
-       assertEquals("Donald", messageRepository.getLastMessage().getUser());
-       assertEquals("Hello, world!", messageRepository.getLastMessage().getMessage());
+       Message message = messageRepository.getMessages().get(0);
+       assertEquals("Donald", message.getUser());
+       assertEquals("Hello, world!", message.getMessage());
     }
     
     @Test

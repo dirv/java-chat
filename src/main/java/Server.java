@@ -33,8 +33,8 @@ public class Server {
     public void startListening() {
         try {
             ServerSocket serverSocket = serverSocketFactory.buildServerSocket(3000);
-            Socket socket = serverSocket.accept();
-            if (socket != null) {
+            Socket socket;
+            while((socket = serverSocket.accept()) != null) {
                 try(BufferedReader bufferedReader
                         = new BufferedReader(
                                 new InputStreamReader(

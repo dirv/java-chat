@@ -10,16 +10,15 @@ import main.java.MessageRepository;
 public class MessageRepositorySpy implements MessageRepository {
 
     private final List<Message> allMessages = new ArrayList<Message>();
-    private Message lastMessage;
     private long askedForMessagesSince;
 
     @Override
     public void receiveMessage(String user, String message) {
-        lastMessage = new Message(-1, user, message);
+        allMessages.add(new Message(-1, user, message));
     }
     
-    public Message getLastMessage() {
-        return lastMessage;
+    public List<Message> getMessages() {
+        return allMessages;
     }
     
     public long getAskedForMessagesSince() {

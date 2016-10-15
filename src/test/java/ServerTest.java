@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.java.Message;
 import main.java.Server;
 
 public class ServerTest {
@@ -42,16 +43,16 @@ public class ServerTest {
         users.add("Donald");
         sendClientMessage("2\nDonald\nHello, world!\n");
         startListening();
-        assertNotNull(messageRepository.getLastMessage());
-        assertEquals("Donald", messageRepository.getLastMessage().getUser());
-        assertEquals("Hello, world!", messageRepository.getLastMessage().getMessage());
+        assertEquals(1, messageRepository.getMessages().size());
+        assertEquals("Donald", message(0).getUser());
+        assertEquals("Hello, world!", message(0).getMessage());
     }
     
     @Test
     public void doNotSendAMessageOnUserRegistration() throws IOException {
         sendClientMessage("1\nDonald\n");
         startListening();
-        assertNull(messageRepository.getLastMessage());
+        assertEquals(0, messageRepository.getMessages().size());
     }
     
     @Test
@@ -90,6 +91,19 @@ public class ServerTest {
                 client.getOutput());
     }
     
+    @Test
+    public void handlesMultipleClients() {
+        sendClientMessage("1\nDonald\n");
+        sendClientMessage("2\nDonald\nHello, world!\n");
+        SocketStub lastClient = sendClientMessage("3\n0\n");
+        startListening();
+        assertEquals(
+                "-1\n" +
+                "Donald\n" + 
+                "Hello, world!\n", lastClient.getOutput());
+        
+    }
+    
     private void addMessage(long timestamp, String name, String message) {
         messageRepository.add(timestamp, name, message);
         
@@ -103,5 +117,9 @@ public class ServerTest {
     private void startListening() {
         Server server = new Server(serverSocketFactory, users, messageRepository);
         server.startListening();
+    }
+
+    private Message message(int number) {
+        return messageRepository.getMessages().get(number);
     }
 }
