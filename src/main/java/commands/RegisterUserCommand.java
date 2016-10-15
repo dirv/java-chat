@@ -2,6 +2,7 @@ package main.java.commands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class RegisterUserCommand extends RecognizedCommand {
@@ -14,8 +15,9 @@ public class RegisterUserCommand extends RecognizedCommand {
     }
 
     @Override
-    public void execute(BufferedReader reader) throws IOException {
+    public void execute(BufferedReader reader, PrintWriter printWriter) throws IOException {
         users.add(reader.readLine());
+        printWriter.println("OK");
     }
 
 }

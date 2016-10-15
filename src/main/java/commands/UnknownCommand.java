@@ -2,6 +2,7 @@ package main.java.commands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 
 public class UnknownCommand implements Command {
@@ -12,6 +13,6 @@ public class UnknownCommand implements Command {
     }
 
     @Override
-    public void execute(BufferedReader reader) throws IOException {
+    public void execute(BufferedReader reader, PrintWriter printWriter) throws IOException {
     }
 }

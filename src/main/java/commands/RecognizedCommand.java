@@ -2,6 +2,7 @@ package main.java.commands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public abstract class RecognizedCommand implements Command {
     
@@ -15,5 +16,5 @@ public abstract class RecognizedCommand implements Command {
         return this.commandType.equals(commandType);
     }
 
-    public abstract void execute(BufferedReader reader) throws IOException;
+    public abstract void execute(BufferedReader reader, PrintWriter printWriter) throws IOException;
 }

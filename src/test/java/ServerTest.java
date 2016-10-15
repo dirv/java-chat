@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.Message;
 import main.java.Server;
 
 public class ServerTest {
@@ -66,6 +65,13 @@ public class ServerTest {
     public void ignoresUnrecognizedCommands() {
         sendClientMessage("x\n");
         startListening();
+    }
+    
+    @Test
+    public void sendMessageAcknowledgement() {
+        SocketStub client = sendClientMessage("1\nDonald\n");
+        startListening();
+        assertEquals("OK\n", client.getOutput());
     }
     
     private SocketStub sendClientMessage(String message) {

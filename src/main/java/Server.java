@@ -1,8 +1,11 @@
 package main.java;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -35,9 +38,14 @@ public class Server {
                         = new BufferedReader(
                                 new InputStreamReader(
                                         socket.getInputStream()))) {
-                    String commandType = bufferedReader.readLine();
-                    if (commandType != null) {
-                        findCommand(commandType).execute(bufferedReader);
+                    try(PrintWriter printWriter
+                            = new PrintWriter(
+                                    new BufferedWriter(
+                                            new OutputStreamWriter(
+                                            socket.getOutputStream())))) {
+                        String commandType = bufferedReader.readLine();
+
+                        findCommand(commandType).execute(bufferedReader, printWriter);
                     }
                 }
             }
