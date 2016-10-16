@@ -57,7 +57,7 @@ public class MessageSender {
         }
     }
 
-    private Socket openSocket() {
+    private Socket openSocket() throws IOException {
         return socketFactory.createSocket(serverAddress, port);
     }
 
