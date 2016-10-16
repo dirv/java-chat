@@ -13,6 +13,7 @@ public class MessageSenderStub extends MessageSender {
     private long lastTimestamp = -1;
     private List<Message> messagesToReturn;
     private final List<String> messagesSent = new ArrayList<>();
+    private boolean wasRegistered;
 
     public MessageSenderStub() {
         this(Collections.emptyList());
@@ -23,6 +24,11 @@ public class MessageSenderStub extends MessageSender {
         this.messagesToReturn = messagesToReturn;
     }
     
+    @Override
+    public boolean register() throws IOException {
+        this.wasRegistered = true;
+        return true;
+    }
     @Override
     public boolean sendMessage(String message) throws IOException {
        messagesSent.add(message); 
@@ -46,5 +52,9 @@ public class MessageSenderStub extends MessageSender {
     
     public boolean getRetrieveMessagesWasCalled() {
         return retrieveMessagesWasCalled;
+    }
+
+    public boolean getWasRegistered() {
+        return wasRegistered;
     }
 }

@@ -27,11 +27,9 @@ public class Client {
 
     public void start() {
         scheduleMessageReading();
-        
-        try(BufferedReader reader = new BufferedReader(
-                new InputStreamReader(input))) {
-            String message = reader.readLine();
-            messageSender.sendMessage(message);
+        try {
+            registerUser();
+            sendMessagesFromInput();
         } catch(IOException ex) {
             display.exception(ex);
         }
@@ -41,6 +39,19 @@ public class Client {
         executor.scheduleWithFixedDelay(serverListener, 0, 3, TimeUnit.SECONDS);
     }
     
+    private void registerUser() throws IOException {
+        messageSender.register();
+    }
+    
+    private void sendMessagesFromInput() throws IOException {
+        try(BufferedReader reader = new BufferedReader(
+                new InputStreamReader(input))) {
+            String message;
+            while ((message = reader.readLine()) != null) {
+                messageSender.sendMessage(message);
+            }
+        }
+    }
     
 
 }

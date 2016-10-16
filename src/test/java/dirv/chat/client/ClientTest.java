@@ -26,6 +26,11 @@ public class ClientTest {
     }
     
     @Test
+    public void registersUsersBeforeSending() {
+        client("").start();
+        assertTrue(messageSender.getWasRegistered());
+    }
+    @Test
     public void sendsMessage() {
         client("Hello, world!\n").start();
         assertEquals(1, messageSender.getMessagesSent().size());
@@ -43,6 +48,15 @@ public class ClientTest {
         };
         client(input).start();
         assertEquals(exception, display.getLastException());
+    }
+    
+    @Test
+    public void sendMultipleMessages() {
+        client("A\nB\nC\n").start();
+        assertEquals(3, messageSender.getMessagesSent().size());
+        assertEquals("A", messageSender.getMessagesSent().get(0));
+        assertEquals("B", messageSender.getMessagesSent().get(1));
+        assertEquals("C", messageSender.getMessagesSent().get(2));
     }
     
     private Client client(String input) {
