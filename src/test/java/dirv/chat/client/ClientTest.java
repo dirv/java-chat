@@ -1,6 +1,8 @@
 package dirv.chat.client;
 
 import static org.junit.Assert.*;
+import static dirv.chat.client.Examples.*;
+import static dirv.chat.Assertions.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -88,17 +90,11 @@ public class ClientTest {
     
     @Test
     public void returnsListOfRetrievedMessages() throws IOException {
-        Message message1 = new Message(200, "Donald", "Hello, world!");
-        Message message2 = new Message(300, "Donald", "Hello?");
-        socketFactory.setResponse(message1.asResponseString() + message2.asResponseString());
+        socketFactory.setResponse(MESSAGE1.asResponseString() + MESSAGE2.asResponseString());
         List<Message> receivedMessages = buildClient().retrieveMessagesSince(123);
         assertEquals(2, receivedMessages.size());
-        assertEquals(message1.getTimestamp(), receivedMessages.get(0).getTimestamp());
-        assertEquals(message1.getUser(), receivedMessages.get(0).getUser());
-        assertEquals(message1.getMessage(), receivedMessages.get(0).getMessage());
-        assertEquals(message2.getTimestamp(), receivedMessages.get(1).getTimestamp());
-        assertEquals(message2.getUser(), receivedMessages.get(1).getUser());
-        assertEquals(message2.getMessage(), receivedMessages.get(1).getMessage());
+        assertMessageEquals(MESSAGE1, receivedMessages.get(0));
+        assertMessageEquals(MESSAGE2, receivedMessages.get(1));
     }
     
     private Client buildClient() {

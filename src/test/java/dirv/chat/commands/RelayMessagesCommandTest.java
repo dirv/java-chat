@@ -1,7 +1,6 @@
 package dirv.chat.commands;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 import java.io.IOException;
 
