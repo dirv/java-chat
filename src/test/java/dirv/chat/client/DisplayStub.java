@@ -13,10 +13,16 @@ public class DisplayStub extends Display {
 
     private List<Message> messagesShown = new ArrayList<>();
     private Exception lastException;
+    private String lastError;
     
     @Override
     public void exception(Exception exception) {
         this.lastException = exception;
+    }
+    
+    @Override
+    public void error(String error) {
+        this.lastError = error;
     }
     
     @Override
@@ -30,6 +36,10 @@ public class DisplayStub extends Display {
     
     public List<Message> getMessagesShown() {
         return messagesShown;
+    }
+    
+    public String getLastError() {
+        return lastError;
     }
 
 }

@@ -24,4 +24,8 @@ public class Display {
         String fullString = String.format("[%s] [%s] %s", timestamp, message.getUser(), message.getMessage());
         out.println(fullString);
     }
+
+    public void error(String error) {
+        out.println("Error: " + error);
+    }
 }

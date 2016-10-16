@@ -16,7 +16,7 @@ public class DisplayTest {
     private final PrintStream pw = new PrintStream(out);
     
     @Test
-    public void outputsMessageOnConsole() throws ParseException {
+    public void outputsMessage() throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long timestamp = formatter.parse("2016-10-16 16:18:30").getTime();
         Message message = new Message(timestamp, "Donald", "Hello, world!");
@@ -26,11 +26,17 @@ public class DisplayTest {
     }
     
     @Test
-    public void outputsExceptionOnConsole() {
+    public void outputsException() {
         Exception ex = new Exception("Test");
         new Display(pw).exception(ex);
         
         assertEquals("An internal error occurred: Test\n", out.toString());
+    }
+    
+    @Test
+    public void outputsErrorOnConsole() {
+        new Display(pw).error("This is an error");
+        assertEquals("Error: This is an error\n", out.toString());
     }
     
 }

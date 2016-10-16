@@ -27,7 +27,10 @@ public class Client {
     public void start() {
         scheduleMessageReading();
         try {
-            registerUser();
+            if (!registerUser()) {
+                display.error("user registration failed");
+                return;
+            }
             sendMessagesFromInput();
         } catch(IOException ex) {
             display.exception(ex);
@@ -38,8 +41,8 @@ public class Client {
         executor.scheduleWithFixedDelay(serverListener, 0, 3, TimeUnit.SECONDS);
     }
     
-    private void registerUser() throws IOException {
-        messageSender.register();
+    private boolean registerUser() throws IOException {
+        return messageSender.register();
     }
     
     private void sendMessagesFromInput() throws IOException {

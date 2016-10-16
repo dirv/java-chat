@@ -13,7 +13,7 @@ public class ClientTest {
 
     private final ServerListener serverListener = new ServerListener(null, null);
     private final ScheduledExecutorServiceSpy executor = new ScheduledExecutorServiceSpy();
-    private final MessageSenderStub messageSender = new MessageSenderStub();
+    private MessageSenderStub messageSender = new MessageSenderStub();
     private final DisplayStub display = new DisplayStub();
 
     @Test
@@ -30,6 +30,31 @@ public class ClientTest {
         client("").start();
         assertTrue(messageSender.getWasRegistered());
     }
+    
+    @Test
+    public void doesNotSendAnyMessagesIfRegistrationFailed() {
+        setErrorOnRegistration();
+        client("Hello?\n").start();
+        assertEquals(0, messageSender.getMessagesSent().size());
+    }
+
+    private void setErrorOnRegistration() {
+        messageSender = new MessageSenderStub() {
+            @Override
+            public boolean register() throws IOException {
+                return false;
+            }
+        };
+    }
+    
+    @Test
+    public void writesErrorMessageIfRegistrationFailed() {
+        setErrorOnRegistration();
+        client("").start();
+        assertEquals("user registration failed", display.getLastError());
+        
+    }
+
     @Test
     public void sendsMessage() {
         client("Hello, world!\n").start();
