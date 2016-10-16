@@ -14,39 +14,64 @@ public class ClientTest {
 
     @Test
     public void opensSocketWithGivenIpAndPort() throws IOException {
-        Client client = new Client(socketFactory, serverAddress, serverPort, "Donald");
-        client.register();
+        buildClient().register();
         assertEquals(serverAddress, socketFactory.getPassedAddress());
         assertEquals(serverPort, socketFactory.getPassedPort());
     }
     
     @Test
     public void registersUser() throws IOException {
-        Client client = new Client(socketFactory, serverAddress, serverPort, "Donald");
-        client.register();
+        buildClient().register();
         assertEquals("1\nDonald\n", socketFactory.getLastSocket().getOutput());
     }
     
     @Test
     public void closesSocketAfterRegistering() throws IOException {
-        Client client = new Client(socketFactory, serverAddress, serverPort, "Donald");
-        client.register();
+        buildClient().register();
         assertTrue(socketFactory.getLastSocket().getWasClosed());
     }
     
     @Test
-    public void returnsTrueIfServerRespondedOk() throws IOException {
+    public void returnsTrueIfRegisteredUser() throws IOException {
         socketFactory.setResponse("OK\n");
-        Client client = new Client(socketFactory, serverAddress, serverPort, "Donald");
-        boolean successfullyRegistered = client.register();
+        boolean successfullyRegistered = buildClient().register();
         assertTrue(successfullyRegistered);
     }
     
     @Test
-    public void returnsFalseIfServerDidNotRespondOk() throws IOException {
+    public void returnsFalseIfDidNotRegisterUser() throws IOException {
         socketFactory.setResponse("ERROR\n");
-        Client client = new Client(socketFactory, serverAddress, serverPort, "Donald");
-        boolean successfullyRegistered = client.register();
+        boolean successfullyRegistered = buildClient().register();
         assertFalse(successfullyRegistered);
+    }
+    
+    @Test
+    public void sendsMessageToServer() throws IOException {
+        buildClient().sendMessage("Message");
+        assertEquals("2\nDonald\nMessage\n", socketFactory.getLastSocket().getOutput());
+    }
+    
+    @Test
+    public void closesSocketAfterSending() throws IOException {
+        buildClient().sendMessage("Message");
+        assertTrue(socketFactory.getLastSocket().getWasClosed());;
+    }
+    
+    @Test
+    public void returnsTrueIfSentMessage() throws IOException {
+        socketFactory.setResponse("OK\n");
+        boolean successfullySent = buildClient().sendMessage("Message");
+        assertTrue(successfullySent);
+    }
+
+    @Test
+    public void returnsFalseIfDidNotSendMessage() throws IOException {
+        socketFactory.setResponse("ERROR\n");
+        boolean successfullySent = buildClient().sendMessage("Message");
+        assertFalse(successfullySent);
+    }
+    
+    private Client buildClient() {
+        return new Client(socketFactory, serverAddress, serverPort, "Donald");
     }
 }

@@ -28,9 +28,23 @@ public class Client {
             BufferedReader reader = bufferedReader(socket)) {
             printWriter.println("1");
             printWriter.println(user);
-            String response = reader.readLine();
-            return "OK".equals(response);
+            return checkResponse(reader);
         }
+    }
+
+    public boolean sendMessage(String message) throws IOException {
+        try(Socket socket = socketFactory.createSocket(serverAddress, port);
+            PrintWriter printWriter = printWriter(socket);
+            BufferedReader reader = bufferedReader(socket)) {
+            printWriter.println("2");
+            printWriter.println(user);
+            printWriter.println(message);
+            return checkResponse(reader);
+        }
+    }
+        
+    private boolean checkResponse(BufferedReader reader) throws IOException {
+        return "OK".equals(reader.readLine());
     }
 
     private static BufferedReader bufferedReader(Socket socket) throws IOException {
@@ -42,5 +56,5 @@ public class Client {
                 new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream())));
     }
-        
+
 }
