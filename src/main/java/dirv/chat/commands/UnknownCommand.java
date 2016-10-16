@@ -3,7 +3,6 @@ package dirv.chat.commands;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 
 public class UnknownCommand implements Command {
 
