@@ -6,17 +6,17 @@ import java.util.List;
 
 import dirv.chat.Message;
 
-public class ClientStub extends Client {
+public class MessageSenderStub extends MessageSender {
 
     private boolean retrieveMessagesWasCalled = false;
     private long lastTimestamp = -1;
     private List<Message> messagesToReturn;
 
-    public ClientStub() {
+    public MessageSenderStub() {
         this(Collections.emptyList());
     }
     
-    public ClientStub(List<Message> messagesToReturn) {
+    public MessageSenderStub(List<Message> messagesToReturn) {
         super(null, "", 0, "");
         this.messagesToReturn = messagesToReturn;
     }

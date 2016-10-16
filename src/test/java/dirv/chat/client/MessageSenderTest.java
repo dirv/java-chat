@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import dirv.chat.Message;
 
-public class ClientTest {
+public class MessageSenderTest {
     
     private SocketFactoryStub socketFactory = new SocketFactoryStub();
     private final String serverAddress = "1.2.3.4";
@@ -19,85 +19,85 @@ public class ClientTest {
 
     @Test
     public void opensSocketWithGivenIpAndPort() throws IOException {
-        buildClient().register();
+        buildMessageSender().register();
         assertEquals(serverAddress, socketFactory.getPassedAddress());
         assertEquals(serverPort, socketFactory.getPassedPort());
     }
     
     @Test
     public void registersUser() throws IOException {
-        buildClient().register();
+        buildMessageSender().register();
         assertEquals("1\nDonald\n", socketFactory.getLastSocket().getOutput());
     }
     
     @Test
     public void closesSocketAfterRegistering() throws IOException {
-        buildClient().register();
+        buildMessageSender().register();
         assertTrue(socketFactory.getLastSocket().getWasClosed());
     }
     
     @Test
     public void returnsTrueIfRegisteredUser() throws IOException {
         socketFactory.setResponse("OK\n");
-        boolean successfullyRegistered = buildClient().register();
+        boolean successfullyRegistered = buildMessageSender().register();
         assertTrue(successfullyRegistered);
     }
     
     @Test
     public void returnsFalseIfDidNotRegisterUser() throws IOException {
         socketFactory.setResponse("ERROR\n");
-        boolean successfullyRegistered = buildClient().register();
+        boolean successfullyRegistered = buildMessageSender().register();
         assertFalse(successfullyRegistered);
     }
     
     @Test
     public void sendsMessageToServer() throws IOException {
-        buildClient().sendMessage("Message");
+        buildMessageSender().sendMessage("Message");
         assertEquals("2\nDonald\nMessage\n", socketFactory.getLastSocket().getOutput());
     }
     
     @Test
     public void closesSocketAfterSending() throws IOException {
-        buildClient().sendMessage("Message");
+        buildMessageSender().sendMessage("Message");
         assertTrue(socketFactory.getLastSocket().getWasClosed());;
     }
     
     @Test
     public void returnsTrueIfSentMessage() throws IOException {
         socketFactory.setResponse("OK\n");
-        boolean successfullySent = buildClient().sendMessage("Message");
+        boolean successfullySent = buildMessageSender().sendMessage("Message");
         assertTrue(successfullySent);
     }
 
     @Test
     public void returnsFalseIfDidNotSendMessage() throws IOException {
         socketFactory.setResponse("ERROR\n");
-        boolean successfullySent = buildClient().sendMessage("Message");
+        boolean successfullySent = buildMessageSender().sendMessage("Message");
         assertFalse(successfullySent);
     }
     
     @Test
     public void retrievesMessagesSinceTimestamp() throws IOException {
-        buildClient().retrieveMessagesSince(123);
+        buildMessageSender().retrieveMessagesSince(123);
         assertEquals("3\n123\n", socketFactory.getLastSocket().getOutput());
     }
     
     @Test
     public void closesSocketAfterRetrieving() throws IOException {
-        buildClient().retrieveMessagesSince(123);
+        buildMessageSender().retrieveMessagesSince(123);
         assertTrue(socketFactory.getLastSocket().getWasClosed());
     }
     
     @Test
     public void returnsListOfRetrievedMessages() throws IOException {
         socketFactory.setResponse(MESSAGE1.asResponseString() + MESSAGE2.asResponseString());
-        List<Message> receivedMessages = buildClient().retrieveMessagesSince(123);
+        List<Message> receivedMessages = buildMessageSender().retrieveMessagesSince(123);
         assertEquals(2, receivedMessages.size());
         assertMessageEquals(MESSAGE1, receivedMessages.get(0));
         assertMessageEquals(MESSAGE2, receivedMessages.get(1));
     }
     
-    private Client buildClient() {
-        return new Client(socketFactory, serverAddress, serverPort, "Donald");
+    private MessageSender buildMessageSender() {
+        return new MessageSender(socketFactory, serverAddress, serverPort, "Donald");
     }
 }

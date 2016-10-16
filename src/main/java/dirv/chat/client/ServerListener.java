@@ -6,19 +6,19 @@ import dirv.chat.Message;
 
 public class ServerListener implements Runnable {
 
-    private final Client client;
+    private final MessageSender messageSender;
     private final Display display;
     private long lastTimestampSeen = 0;
     
-    public ServerListener(Client client, Display display) {
-        this.client = client;
+    public ServerListener(MessageSender messageSender, Display display) {
+        this.messageSender = messageSender;
         this.display = display;
     }
 
     @Override
     public void run() {
         try {
-            client.retrieveMessagesSince(lastTimestampSeen)
+            messageSender.retrieveMessagesSince(lastTimestampSeen)
             .stream()
             .forEach(this::handleMessage);
         } catch (IOException e) {

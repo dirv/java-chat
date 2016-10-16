@@ -14,7 +14,7 @@ import dirv.chat.Message;
 
 public class ServerListenerTest {
 
-    private ClientStub client = new ClientStub();
+    private MessageSenderStub messageSender = new MessageSenderStub();
     private DisplayStub display = new DisplayStub();
 
     @Test
@@ -25,14 +25,14 @@ public class ServerListenerTest {
     @Test
     public void startsCountingFromZeroMessages() {
         serverListener().run();
-        assertTrue(client.getRetrieveMessagesWasCalled());
-        assertEquals(0, client.getLastTimestamp());
+        assertTrue(messageSender.getRetrieveMessagesWasCalled());
+        assertEquals(0, messageSender.getLastTimestamp());
     }
     
     @Test
     public void reportsExceptionsOnException() {
         IOException exception = new IOException();
-        client = new ClientStub() {
+        messageSender = new MessageSenderStub() {
             @Override
             public List<Message> retrieveMessagesSince(long timestamp) throws IOException {
                 throw exception;
@@ -44,7 +44,7 @@ public class ServerListenerTest {
     
     @Test
     public void displaysEachMessageWhenRetrieved() {
-        client = new ClientStub(Arrays.asList(MESSAGE1, MESSAGE2));
+        messageSender = new MessageSenderStub(Arrays.asList(MESSAGE1, MESSAGE2));
         serverListener().run();
         assertEquals(2, display.getMessagesShown().size());
         assertMessageEquals(MESSAGE1, display.getMessagesShown().get(0));
@@ -53,14 +53,14 @@ public class ServerListenerTest {
     
     @Test
     public void subsequentCallsUseLatestTimestampSeen() {
-        client = new ClientStub(Arrays.asList(MESSAGE1));
+        messageSender = new MessageSenderStub(Arrays.asList(MESSAGE1));
         ServerListener serverListener = serverListener();
         serverListener.run();
         serverListener.run();
-        assertEquals(MESSAGE1.getTimestamp(), client.getLastTimestamp());
+        assertEquals(MESSAGE1.getTimestamp(), messageSender.getLastTimestamp());
     }
     
     private ServerListener serverListener() {
-        return new ServerListener(client, display);
+        return new ServerListener(messageSender, display);
     }
 }

@@ -12,14 +12,14 @@ import java.util.List;
 
 import dirv.chat.Message;
 
-public class Client {
+public class MessageSender {
 
     private final SocketFactory socketFactory;
     private final String serverAddress;
     private final String user;
     private int port;
     
-    public Client(SocketFactory socketFactory, String serverAddress, int port, String user) {
+    public MessageSender(SocketFactory socketFactory, String serverAddress, int port, String user) {
         this.socketFactory = socketFactory;
         this.serverAddress = serverAddress;
         this.user = user;
