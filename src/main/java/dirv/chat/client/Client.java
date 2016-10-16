@@ -50,7 +50,9 @@ public class Client {
                 new InputStreamReader(input))) {
             String message;
             while ((message = reader.readLine()) != null) {
-                messageSender.sendMessage(message);
+                boolean success = messageSender.sendMessage(message);
+                if (!success)
+                    display.error("server rejected message");
             }
         }
     }

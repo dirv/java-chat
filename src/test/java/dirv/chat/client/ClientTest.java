@@ -38,21 +38,11 @@ public class ClientTest {
         assertEquals(0, messageSender.getMessagesSent().size());
     }
 
-    private void setErrorOnRegistration() {
-        messageSender = new MessageSenderStub() {
-            @Override
-            public boolean register() throws IOException {
-                return false;
-            }
-        };
-    }
-    
     @Test
     public void writesErrorMessageIfRegistrationFailed() {
         setErrorOnRegistration();
         client("").start();
         assertEquals("user registration failed", display.getLastError());
-        
     }
 
     @Test
@@ -82,6 +72,31 @@ public class ClientTest {
         assertEquals("A", messageSender.getMessagesSent().get(0));
         assertEquals("B", messageSender.getMessagesSent().get(1));
         assertEquals("C", messageSender.getMessagesSent().get(2));
+    }
+    
+    @Test
+    public void displaysMessageSendErrors() {
+        setErrorOnMessageSend(); 
+        client("A").start();
+        assertEquals("server rejected message", display.getLastError());
+    }
+    
+    private void setErrorOnRegistration() {
+        messageSender = new MessageSenderStub() {
+            @Override
+            public boolean register() throws IOException {
+                return false;
+            }
+        };
+    }
+    
+    private void setErrorOnMessageSend() {
+        messageSender = new MessageSenderStub() {
+            @Override
+            public boolean sendMessage(String message) throws IOException {
+                return false;
+            }
+        };
     }
     
     private Client client(String input) {
