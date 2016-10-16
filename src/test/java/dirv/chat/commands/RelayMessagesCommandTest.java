@@ -1,4 +1,4 @@
-package dirv.chat.test.commands;
+package dirv.chat.commands;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import dirv.chat.commands.Command;
 import dirv.chat.commands.RelayMessagesCommand;
-import dirv.chat.test.MessageRepositorySpy;
+import dirv.chat.MessageRepositorySpy;
 
 public class RelayMessagesCommandTest extends CommandTest {
 

@@ -1,4 +1,4 @@
-package dirv.chat.test;
+package dirv.chat;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

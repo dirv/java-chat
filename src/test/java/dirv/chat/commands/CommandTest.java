@@ -1,4 +1,4 @@
-package dirv.chat.test.commands;
+package dirv.chat.commands;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

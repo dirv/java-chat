@@ -1,4 +1,4 @@
-package dirv.chat.test.commands;
+package dirv.chat.commands;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,7 @@ import org.junit.Test;
 import dirv.chat.Message;
 import dirv.chat.commands.Command;
 import dirv.chat.commands.SaveMessageCommand;
-import dirv.chat.test.MessageRepositorySpy;
+import dirv.chat.MessageRepositorySpy;
 
 public class SaveMessageCommandTest extends CommandTest {
 

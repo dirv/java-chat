@@ -1,4 +1,4 @@
-package dirv.chat.test.commands;
+package dirv.chat.commands;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

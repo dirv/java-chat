@@ -1,4 +1,4 @@
-package dirv.chat.test;
+package dirv.chat;
 
 import static org.junit.Assert.*;
 
