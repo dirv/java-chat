@@ -7,6 +7,10 @@ import dirv.chat.Message;
 
 public class DisplayStub extends Display {
     
+    public DisplayStub() {
+        super(null);
+    }
+
     private List<Message> messagesShown = new ArrayList<>();
     private Exception lastException;
     

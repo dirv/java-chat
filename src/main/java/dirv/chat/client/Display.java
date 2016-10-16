@@ -1,5 +1,6 @@
 package dirv.chat.client;
 
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,14 +9,19 @@ import dirv.chat.Message;
 public class Display {
 
     private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final PrintStream out;
+    
+    public Display(PrintStream out) {
+        this.out = out;
+    }
 
     public void exception(Exception exception) {
-        System.out.println("An internal error occurred: " + exception.getMessage());
+        out.println("An internal error occurred: " + exception.getMessage());
     }
     
     public void message(Message message) {
         String timestamp = formatter.format(new Date(message.getTimestamp()));
         String fullString = String.format("[%s] [%s] %s", timestamp, message.getUser(), message.getMessage());
-        System.out.println(fullString);
+        out.println(fullString);
     }
 }
