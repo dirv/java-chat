@@ -1,4 +1,4 @@
-package main.java;
+package dirv.chat;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,25 +9,31 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import main.java.commands.Command;
-import main.java.commands.RegisterUserCommand;
-import main.java.commands.RelayMessagesCommand;
-import main.java.commands.SaveMessageCommand;
-import main.java.commands.UnknownCommand;
+import dirv.chat.commands.Command;
+import dirv.chat.commands.RegisterUserCommand;
+import dirv.chat.commands.RelayMessagesCommand;
+import dirv.chat.commands.SaveMessageCommand;
+import dirv.chat.commands.UnknownCommand;
 
 public class Server {
 
     private final ServerSocketFactory serverSocketFactory;
-    private final List<Command> commands = new ArrayList<Command>();
+    private final List<Command> commands;
     
     public Server(ServerSocketFactory serverSocketFactory, List<String> users, MessageRepository messageRepository) {
         this.serverSocketFactory = serverSocketFactory;
-        commands.add(new RegisterUserCommand(users));
-        commands.add(new SaveMessageCommand(messageRepository, users));
-        commands.add(new RelayMessagesCommand(messageRepository));
-        commands.add(new UnknownCommand());
+        commands = buildCommands(users, messageRepository);
+    }
+    
+    private static List<Command> buildCommands(List<String> users, MessageRepository messageRepository) {
+        return Arrays.asList(
+                new RegisterUserCommand(users),
+                new SaveMessageCommand(messageRepository, users),
+                new RelayMessagesCommand(messageRepository),
+                new UnknownCommand());
     }
 
     public void listen() {

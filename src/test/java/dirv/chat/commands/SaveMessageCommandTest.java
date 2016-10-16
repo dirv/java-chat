@@ -1,4 +1,4 @@
-package test.java.commands;
+package dirv.chat.test.commands;
 
 import static org.junit.Assert.*;
 
@@ -10,10 +10,10 @@ import java.util.List;
 
 import org.junit.Test;
 
-import main.java.Message;
-import main.java.commands.Command;
-import main.java.commands.SaveMessageCommand;
-import test.java.MessageRepositorySpy;
+import dirv.chat.Message;
+import dirv.chat.commands.Command;
+import dirv.chat.commands.SaveMessageCommand;
+import dirv.chat.test.MessageRepositorySpy;
 
 public class SaveMessageCommandTest extends CommandTest {
 

@@ -1,4 +1,4 @@
-package test.java;
+package dirv.chat.test;
 
 import java.io.IOException;
 import java.net.ServerSocket;

@@ -1,4 +1,4 @@
-package main.java;
+package dirv.chat;
 
 import java.util.Comparator;
 import java.util.TreeSet;

@@ -1,15 +1,16 @@
-package test.java;
+package dirv.chat.test;
 
 import org.junit.Test;
+
+import dirv.chat.Message;
+import dirv.chat.Server;
+
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import main.java.Message;
-import main.java.Server;
 
 public class ServerTest {
 

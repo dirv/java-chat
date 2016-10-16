@@ -1,4 +1,4 @@
-package test.java.commands;
+package dirv.chat.test.commands;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import main.java.commands.Command;
-import main.java.commands.RegisterUserCommand;
+import dirv.chat.commands.Command;
+import dirv.chat.commands.RegisterUserCommand;
 
 public class RegisterUserCommandTest extends CommandTest {
 

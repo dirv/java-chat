@@ -1,4 +1,4 @@
-package main.java;
+package dirv.chat;
 
 public class Clock {
     public long now() {

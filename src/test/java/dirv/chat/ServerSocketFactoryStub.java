@@ -1,4 +1,4 @@
-package test.java;
+package dirv.chat.test;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.ServerSocketFactory;
+import dirv.chat.ServerSocketFactory;
 
 public class ServerSocketFactoryStub implements ServerSocketFactory {
 

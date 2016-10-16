@@ -1,4 +1,4 @@
-package test.java.commands;
+package dirv.chat.test.commands;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -7,9 +7,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import main.java.commands.Command;
-import main.java.commands.RelayMessagesCommand;
-import test.java.MessageRepositorySpy;
+import dirv.chat.commands.Command;
+import dirv.chat.commands.RelayMessagesCommand;
+import dirv.chat.test.MessageRepositorySpy;
 
 public class RelayMessagesCommandTest extends CommandTest {
 

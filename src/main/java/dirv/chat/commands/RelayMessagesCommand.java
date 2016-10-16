@@ -1,10 +1,10 @@
-package main.java.commands;
+package dirv.chat.commands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import main.java.MessageRepository;
+import dirv.chat.MessageRepository;
 
 public class RelayMessagesCommand extends RecognizedCommand {
 

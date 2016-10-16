@@ -1,6 +1,6 @@
-package test.java;
+package dirv.chat.test;
 
-import main.java.Clock;
+import dirv.chat.Clock;
 
 public class ClockStub extends Clock {
 

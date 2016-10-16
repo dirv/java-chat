@@ -1,4 +1,4 @@
-package main.java.commands;
+package dirv.chat.commands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
