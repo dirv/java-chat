@@ -1,6 +1,7 @@
 package dirv.chat.client;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class MessageSenderStub extends MessageSender {
     private boolean retrieveMessagesWasCalled = false;
     private long lastTimestamp = -1;
     private List<Message> messagesToReturn;
+    private final List<String> messagesSent = new ArrayList<>();
 
     public MessageSenderStub() {
         this(Collections.emptyList());
@@ -19,6 +21,16 @@ public class MessageSenderStub extends MessageSender {
     public MessageSenderStub(List<Message> messagesToReturn) {
         super(null, "", 0, "");
         this.messagesToReturn = messagesToReturn;
+    }
+    
+    @Override
+    public boolean sendMessage(String message) throws IOException {
+       messagesSent.add(message); 
+       return true;
+    }
+    
+    public List<String> getMessagesSent() {
+        return messagesSent;
     }
     
     @Override

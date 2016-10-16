@@ -2,23 +2,54 @@ package dirv.chat.client;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
 public class ClientTest {
 
+    private final ServerListener serverListener = new ServerListener(null, null);
+    private final ScheduledExecutorServiceSpy executor = new ScheduledExecutorServiceSpy();
+    private final MessageSenderStub messageSender = new MessageSenderStub();
+    private final DisplayStub display = new DisplayStub();
+
     @Test
     public void schedulesListenerWhenStarted() {
-        ServerListener serverListener = new ServerListener(null, null);
-        ScheduledExecutorServiceSpy executor = new ScheduledExecutorServiceSpy();
-        MessageSenderStub messageSender = new MessageSenderStub();
-        
-        Client client = new Client(executor, serverListener, messageSender);
-        client.start();
+        client("").start();
         assertEquals(serverListener, executor.getScheduledCommand());
         assertEquals(0, executor.getScheduledInitialDelay());
         assertEquals(3, executor.getScheduledDelay());
         assertEquals(TimeUnit.SECONDS, executor.getScheduledTimeUnit());
+    }
+    
+    @Test
+    public void sendsMessage() {
+        client("Hello, world!\n").start();
+        assertEquals(1, messageSender.getMessagesSent().size());
+        assertEquals("Hello, world!", messageSender.getMessagesSent().get(0));
+    }
+    
+    @Test
+    public void displaysExceptionOnError() {
+        IOException exception = new IOException();
+        InputStream input = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                throw exception;
+            }
+        };
+        client(input).start();
+        assertEquals(exception, display.getLastException());
+    }
+    
+    private Client client(String input) {
+        return client(new ByteArrayInputStream(input.getBytes()));
+    }
+    
+    private Client client(InputStream input) {
+        return new Client(executor, serverListener, messageSender, display, input);
     }
 }

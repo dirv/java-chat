@@ -1,5 +1,10 @@
 package dirv.chat.client;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -8,17 +13,28 @@ public class Client {
     private final ScheduledExecutorService executor;
     private final ServerListener serverListener;
     private final MessageSender messageSender;
+    private final Display display;
+    private final InputStream input;
     
     public Client(ScheduledExecutorService executor, ServerListener serverListener,
-            MessageSender messageSender) {
+            MessageSender messageSender, Display display, InputStream input) {
         this.executor = executor;
         this.serverListener = serverListener;
         this.messageSender = messageSender;
+        this.display = display;
+        this.input = input;
     }
 
     public void start() {
         scheduleMessageReading();
         
+        try(BufferedReader reader = new BufferedReader(
+                new InputStreamReader(input))) {
+            String message = reader.readLine();
+            messageSender.sendMessage(message);
+        } catch(IOException ex) {
+            display.exception(ex);
+        }
     }
 
     private void scheduleMessageReading() {
