@@ -7,6 +7,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+import dirv.chat.Message;
 
 public class Client {
 
@@ -23,7 +27,7 @@ public class Client {
     }
 
     public boolean register() throws IOException {
-        try(Socket socket = socketFactory.createSocket(serverAddress, port);
+        try(Socket socket = openSocket();
             PrintWriter printWriter = printWriter(socket);
             BufferedReader reader = bufferedReader(socket)) {
             printWriter.println("1");
@@ -33,7 +37,7 @@ public class Client {
     }
 
     public boolean sendMessage(String message) throws IOException {
-        try(Socket socket = socketFactory.createSocket(serverAddress, port);
+        try(Socket socket = openSocket();
             PrintWriter printWriter = printWriter(socket);
             BufferedReader reader = bufferedReader(socket)) {
             printWriter.println("2");
@@ -42,11 +46,38 @@ public class Client {
             return checkResponse(reader);
         }
     }
-        
+
+    public List<Message> retrieveMessagesSince(long timestamp) throws IOException {
+        try(Socket socket = openSocket();
+            PrintWriter printWriter = printWriter(socket);
+            BufferedReader reader = bufferedReader(socket)) {
+            printWriter.println("3");
+            printWriter.println(timestamp);
+            return readMessages(reader);
+        }
+    }
+
+    private Socket openSocket() {
+        return socketFactory.createSocket(serverAddress, port);
+    }
+
     private boolean checkResponse(BufferedReader reader) throws IOException {
         return "OK".equals(reader.readLine());
     }
 
+    private List<Message> readMessages(BufferedReader reader) throws IOException {
+        String timestamp;
+        List<Message> messages = new ArrayList<>();
+        while((timestamp = reader.readLine()) != null) {
+            String user = reader.readLine();
+            String message = reader.readLine();
+            messages.add(
+                new Message(Long.parseLong(timestamp),
+                    user,
+                    message));
+        }
+        return messages;
+    }
     private static BufferedReader bufferedReader(Socket socket) throws IOException {
         return new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
@@ -56,5 +87,4 @@ public class Client {
                 new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream())));
     }
-
 }
