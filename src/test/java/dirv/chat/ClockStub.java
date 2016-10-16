@@ -4,7 +4,7 @@ import dirv.chat.Clock;
 
 public class ClockStub extends Clock {
 
-    private long now;
+    private long now = 1;
     private boolean wasCalled = false;
     
     @Override

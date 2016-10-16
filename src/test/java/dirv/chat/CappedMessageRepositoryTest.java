@@ -54,7 +54,16 @@ public class CappedMessageRepositoryTest {
         assertEquals(2, messagesSince(0).size());
         assertEquals("Goodbye", messagesSince(0).get(0).getMessage());
         assertEquals("x", messagesSince(0).get(1).getMessage());
-        
+    }
+    
+    @Test
+    public void returnsMessagesAfterTimestamp() {
+        clock.setNow(100L);
+        repository.receiveMessage("Donald", "Hello");
+        clock.setNow(101L);
+        repository.receiveMessage("Donald", "Goodbye");
+        assertEquals(1, messagesSince(100).size());
+        assertEquals(101, messagesSince(100).get(0).getTimestamp());
     }
     
     private List<Message> messagesSince(long timestamp) {

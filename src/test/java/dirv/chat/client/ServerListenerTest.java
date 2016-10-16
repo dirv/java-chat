@@ -51,6 +51,15 @@ public class ServerListenerTest {
         assertMessageEquals(MESSAGE2, display.getMessagesShown().get(1));
     }
     
+    @Test
+    public void subsequentCallsUseLatestTimestampSeen() {
+        client = new ClientStub(Arrays.asList(MESSAGE1));
+        ServerListener serverListener = serverListener();
+        serverListener.run();
+        serverListener.run();
+        assertEquals(MESSAGE1.getTimestamp(), client.getLastTimestamp());
+    }
+    
     private ServerListener serverListener() {
         return new ServerListener(client, display);
     }

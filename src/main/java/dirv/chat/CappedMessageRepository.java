@@ -25,7 +25,8 @@ public class CappedMessageRepository implements MessageRepository {
 
     @Override
     public Stream<Message> getMessagesSince(long timestamp) {
-        return messages.stream();
+        return messages.stream()
+                .filter(m -> m.getTimestamp() > timestamp);
     }
     
     public class ChronologicalComparator implements Comparator<Message> {
