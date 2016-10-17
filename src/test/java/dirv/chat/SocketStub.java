@@ -9,36 +9,38 @@ import java.net.Socket;
 
 public class SocketStub extends Socket {
 
-    private final String input;
-    private final ByteArrayOutputStream output = new ByteArrayOutputStream();
+    protected InputStream input;
+    protected OutputStream output;
     private boolean wasClosed;
 
     public SocketStub() {
         this("");
     }
     public SocketStub(String input) {
-        this.input = input;
+        this.input = new ByteArrayInputStream(input.getBytes());
+        this.output = new ByteArrayOutputStream();
     }
-    
+
     @Override
     public InputStream getInputStream() {
-        return new ByteArrayInputStream(input.getBytes());
+        return input;
     }
-    
+
     @Override
     public void close() throws IOException {
         this.wasClosed = true;
     }
-    
+
     public OutputStream getOutputStream() {
         return output;
     }
-    
+
     public String getOutput() {
         return output.toString();
     }
-    
+
     public boolean getWasClosed() {
         return wasClosed;
     }
+
 }

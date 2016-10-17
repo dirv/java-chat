@@ -2,6 +2,7 @@ package dirv.chat.client;
 
 import java.net.Socket;
 
+import dirv.chat.FlushRequiringSocketStub;
 import dirv.chat.SocketStub;
 
 public class SocketFactoryStub implements SocketFactory {
@@ -15,7 +16,7 @@ public class SocketFactoryStub implements SocketFactory {
     public Socket createSocket(String address, int port) {
         this.passedAddress = address;
         this.passedPort = port;
-        return this.lastSocket = new SocketStub(nextResponse);
+        return this.lastSocket = new FlushRequiringSocketStub(nextResponse);
     }
     
     public String getPassedAddress() {

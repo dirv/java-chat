@@ -32,6 +32,7 @@ public class MessageSender {
             BufferedReader reader = bufferedReader(socket)) {
             printWriter.println("1");
             printWriter.println(user);
+            printWriter.flush();
             return checkResponse(reader);
         }
     }
@@ -43,6 +44,7 @@ public class MessageSender {
             printWriter.println("2");
             printWriter.println(user);
             printWriter.println(message);
+            printWriter.flush();
             return checkResponse(reader);
         }
     }
@@ -53,6 +55,7 @@ public class MessageSender {
             BufferedReader reader = bufferedReader(socket)) {
             printWriter.println("3");
             printWriter.println(timestamp);
+            printWriter.flush();
             return readMessages(reader);
         }
     }
