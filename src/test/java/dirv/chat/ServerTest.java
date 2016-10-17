@@ -19,9 +19,9 @@ public class ServerTest {
     private MessageRepositorySpy messageRepository = new MessageRepositorySpy();
 
     @Test
-    public void listensOnPort3000() throws IOException {
-        startListening();
-        assertEquals(3000, serverSocketFactory.getPort());
+    public void listensOnSpecifiedPort() throws IOException {
+        startListening(5678);
+        assertEquals(5678, serverSocketFactory.getPort());
     }
     
     @Test
@@ -116,7 +116,11 @@ public class ServerTest {
     }
 
     private void startListening() {
-        Server server = new Server(serverSocketFactory, users, messageRepository);
+        startListening(3000);
+    }
+
+    private void startListening(int port) {
+        Server server = new Server(serverSocketFactory, users, messageRepository, port);
         server.listen();
     }
 

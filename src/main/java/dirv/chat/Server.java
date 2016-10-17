@@ -21,9 +21,11 @@ public class Server {
 
     private final ServerSocketFactory serverSocketFactory;
     private final List<Command> commands;
+    private final int port;
     
-    public Server(ServerSocketFactory serverSocketFactory, List<String> users, MessageRepository messageRepository) {
+    public Server(ServerSocketFactory serverSocketFactory, List<String> users, MessageRepository messageRepository, int port) {
         this.serverSocketFactory = serverSocketFactory;
+        this.port = port;
         commands = buildCommands(users, messageRepository);
     }
     
@@ -37,12 +39,13 @@ public class Server {
 
     public void listen() {
         try {
-            ServerSocket serverSocket = serverSocketFactory.buildServerSocket(3000);
+            ServerSocket serverSocket = serverSocketFactory.buildServerSocket(port);
             Socket socket;
             while((socket = serverSocket.accept()) != null) {
                 handleSocket(socket);
             }
         } catch (IOException ex) {
+            ex.printStackTrace();
             throw new RuntimeException();
         }
     }
