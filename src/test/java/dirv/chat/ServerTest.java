@@ -121,7 +121,7 @@ public class ServerTest {
 
     private void startListening(int port) {
         Server server = new Server(serverSocketFactory, users, messageRepository, port);
-        server.listen();
+        server.run();
     }
 
     private Message message(int number) {

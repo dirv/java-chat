@@ -17,7 +17,7 @@ import dirv.chat.commands.RelayMessagesCommand;
 import dirv.chat.commands.SaveMessageCommand;
 import dirv.chat.commands.UnknownCommand;
 
-public class Server {
+public class Server implements Runnable {
 
     private final ServerSocketFactory serverSocketFactory;
     private final List<Command> commands;
@@ -37,7 +37,7 @@ public class Server {
                 new UnknownCommand());
     }
 
-    public void listen() {
+    public void run() {
         try {
             ServerSocket serverSocket = serverSocketFactory.buildServerSocket(port);
             Socket socket;

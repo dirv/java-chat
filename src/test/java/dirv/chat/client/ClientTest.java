@@ -18,7 +18,7 @@ public class ClientTest {
 
     @Test
     public void schedulesListenerWhenStarted() {
-        client("").start();
+        client("").run();
         assertEquals(serverListener, executor.getScheduledCommand());
         assertEquals(0, executor.getScheduledInitialDelay());
         assertEquals(3, executor.getScheduledDelay());
@@ -27,27 +27,27 @@ public class ClientTest {
     
     @Test
     public void registersUsersBeforeSending() {
-        client("").start();
+        client("").run();
         assertTrue(messageSender.getWasRegistered());
     }
     
     @Test
     public void doesNotSendAnyMessagesIfRegistrationFailed() {
         setErrorOnRegistration();
-        client("Hello?\n").start();
+        client("Hello?\n").run();
         assertEquals(0, messageSender.getMessagesSent().size());
     }
 
     @Test
     public void writesErrorMessageIfRegistrationFailed() {
         setErrorOnRegistration();
-        client("").start();
+        client("").run();
         assertEquals("user registration failed", display.getLastError());
     }
 
     @Test
     public void sendsMessage() {
-        client("Hello, world!\n").start();
+        client("Hello, world!\n").run();
         assertEquals(1, messageSender.getMessagesSent().size());
         assertEquals("Hello, world!", messageSender.getMessagesSent().get(0));
     }
@@ -61,13 +61,13 @@ public class ClientTest {
                 throw exception;
             }
         };
-        client(input).start();
+        client(input).run();
         assertEquals(exception, display.getLastException());
     }
     
     @Test
     public void sendMultipleMessages() {
-        client("A\nB\nC\n").start();
+        client("A\nB\nC\n").run();
         assertEquals(3, messageSender.getMessagesSent().size());
         assertEquals("A", messageSender.getMessagesSent().get(0));
         assertEquals("B", messageSender.getMessagesSent().get(1));
@@ -77,7 +77,7 @@ public class ClientTest {
     @Test
     public void displaysMessageSendErrors() {
         setErrorOnMessageSend(); 
-        client("A").start();
+        client("A").run();
         assertEquals("server rejected message", display.getLastError());
     }
     

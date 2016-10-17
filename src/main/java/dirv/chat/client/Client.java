@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Client {
+public class Client implements Runnable {
 
     private final ScheduledExecutorService executor;
     private final ServerListener serverListener;
@@ -24,7 +24,7 @@ public class Client {
         this.input = input;
     }
 
-    public void start() {
+    public void run() {
         scheduleMessageReading();
         try {
             if (!registerUser()) {
