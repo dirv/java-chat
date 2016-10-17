@@ -1,8 +1,11 @@
-package dirv.chat;
+package dirv.chat.server;
 
 import java.util.Comparator;
 import java.util.TreeSet;
 import java.util.stream.Stream;
+
+import dirv.chat.Clock;
+import dirv.chat.Message;
 
 public class CappedMessageRepository implements MessageRepository {
 

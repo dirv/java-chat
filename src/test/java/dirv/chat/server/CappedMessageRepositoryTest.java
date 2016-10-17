@@ -1,4 +1,4 @@
-package dirv.chat;
+package dirv.chat.server;
 
 import static org.junit.Assert.*;
 
@@ -7,8 +7,9 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import dirv.chat.CappedMessageRepository;
+import dirv.chat.ClockStub;
 import dirv.chat.Message;
+import dirv.chat.server.CappedMessageRepository;
 
 public class CappedMessageRepositoryTest {
 

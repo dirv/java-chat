@@ -1,4 +1,4 @@
-package dirv.chat.commands;
+package dirv.chat.server.commands;
 
 import static org.junit.Assert.*;
 
@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import dirv.chat.commands.Command;
-import dirv.chat.commands.RelayMessagesCommand;
-import dirv.chat.MessageRepositorySpy;
+import dirv.chat.server.MessageRepositorySpy;
+import dirv.chat.server.commands.Command;
+import dirv.chat.server.commands.RelayMessagesCommand;
 
 public class RelayMessagesCommandTest extends CommandTest {
 

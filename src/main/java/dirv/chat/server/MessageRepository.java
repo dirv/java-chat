@@ -1,6 +1,8 @@
-package dirv.chat;
+package dirv.chat.server;
 
 import java.util.stream.Stream;
+
+import dirv.chat.Message;
 
 public interface MessageRepository {
 

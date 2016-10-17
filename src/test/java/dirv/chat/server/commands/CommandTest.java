@@ -1,4 +1,4 @@
-package dirv.chat.commands;
+package dirv.chat.server.commands;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import dirv.chat.commands.Command;
+import dirv.chat.server.commands.Command;
 
 public abstract class CommandTest {
     protected abstract Command command();

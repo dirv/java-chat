@@ -1,4 +1,4 @@
-package dirv.chat;
+package dirv.chat.server;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,11 +11,11 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
-import dirv.chat.commands.Command;
-import dirv.chat.commands.RegisterUserCommand;
-import dirv.chat.commands.RelayMessagesCommand;
-import dirv.chat.commands.SaveMessageCommand;
-import dirv.chat.commands.UnknownCommand;
+import dirv.chat.server.commands.Command;
+import dirv.chat.server.commands.RegisterUserCommand;
+import dirv.chat.server.commands.RelayMessagesCommand;
+import dirv.chat.server.commands.SaveMessageCommand;
+import dirv.chat.server.commands.UnknownCommand;
 
 public class Server implements Runnable {
 

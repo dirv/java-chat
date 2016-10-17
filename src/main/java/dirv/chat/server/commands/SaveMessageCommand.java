@@ -1,11 +1,11 @@
-package dirv.chat.commands;
+package dirv.chat.server.commands;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import dirv.chat.MessageRepository;
+import dirv.chat.server.MessageRepository;
 
 public class SaveMessageCommand extends RecognizedCommand {
 

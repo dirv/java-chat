@@ -1,9 +1,10 @@
-package dirv.chat;
+package dirv.chat.server;
 
 import org.junit.Test;
 
 import dirv.chat.Message;
-import dirv.chat.Server;
+import dirv.chat.SocketStub;
+import dirv.chat.server.Server;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

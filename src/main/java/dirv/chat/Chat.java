@@ -9,6 +9,9 @@ import dirv.chat.client.Display;
 import dirv.chat.client.MessageSender;
 import dirv.chat.client.NetSocketFactory;
 import dirv.chat.client.ServerListener;
+import dirv.chat.server.CappedMessageRepository;
+import dirv.chat.server.NetServerSocketFactory;
+import dirv.chat.server.Server;
 
 public class Chat {
 

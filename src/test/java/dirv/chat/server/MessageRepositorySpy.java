@@ -1,11 +1,11 @@
-package dirv.chat;
+package dirv.chat.server;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 import dirv.chat.Message;
-import dirv.chat.MessageRepository;
+import dirv.chat.server.MessageRepository;
 
 public class MessageRepositorySpy implements MessageRepository {
 
