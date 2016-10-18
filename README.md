@@ -44,12 +44,21 @@ If the name is already in use you will see an error.
 
 ### Simple
 
-* Add helpful messages for both client and server
-* Add a disconnect message and alert all clients when someone joins or leaves
-* TODO
-
+* Helpful stdout messages for both client and server
+* Alert users when someone registers
+* Disconnect message and alert user leaves
+* Ping message that auto-disconnects after a period of silence
 
 ### More involved
 
-TODO
+* Add support for multiple rooms
+* Add a moderator role that has the ability to kick users
+* Add support for password-protected user accounts
+* Allow communication via websockets with a web frontend
+* Client command to list all users
+
+## Contributing
+
+Contributions (of all forms) are most welcome. Please submit pull requests in the normal fashion or contact me directly.
+
 
