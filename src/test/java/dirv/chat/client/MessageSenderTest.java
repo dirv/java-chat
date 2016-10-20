@@ -13,7 +13,9 @@ import dirv.chat.Message;
 
 public class MessageSenderTest {
     
-    private SocketFactoryStub socketFactory = new SocketFactoryStub();
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+	private SocketFactoryStub socketFactory = new SocketFactoryStub();
     private final String serverAddress = "1.2.3.4";
     private final int serverPort = 3000;
 
@@ -27,7 +29,7 @@ public class MessageSenderTest {
     @Test
     public void registersUser() throws IOException {
         buildMessageSender().register();
-        assertEquals("1\nDonald\n", socketFactory.getLastSocket().getOutput());
+        assertEquals("1" + LINE_SEPARATOR + "Donald" + LINE_SEPARATOR, socketFactory.getLastSocket().getOutput());
     }
     
     @Test
@@ -53,7 +55,7 @@ public class MessageSenderTest {
     @Test
     public void sendsMessageToServer() throws IOException {
         buildMessageSender().sendMessage("Message");
-        assertEquals("2\nDonald\nMessage\n", socketFactory.getLastSocket().getOutput());
+        assertEquals("2" + LINE_SEPARATOR + "Donald" + LINE_SEPARATOR + "Message" + LINE_SEPARATOR, socketFactory.getLastSocket().getOutput());
     }
     
     @Test
@@ -79,7 +81,7 @@ public class MessageSenderTest {
     @Test
     public void retrievesMessagesSinceTimestamp() throws IOException {
         buildMessageSender().retrieveMessagesSince(123);
-        assertEquals("3\n123\n", socketFactory.getLastSocket().getOutput());
+        assertEquals("3" + LINE_SEPARATOR + "123" + LINE_SEPARATOR, socketFactory.getLastSocket().getOutput());
     }
     
     @Test

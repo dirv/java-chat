@@ -17,6 +17,8 @@ import dirv.chat.server.commands.SaveMessageCommand;
 
 public class SaveMessageCommandTest extends CommandTest {
 
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
     private String input;
     private final List<String> users = new ArrayList<String>();
     private final ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -35,13 +37,13 @@ public class SaveMessageCommandTest extends CommandTest {
     public void acknowledgesSave() throws IOException {
         users.add("Donald");
         String output = executeCommand("Donald\nHello, world!");
-        assertEquals("OK\n", output.toString());
+        assertEquals("OK" + LINE_SEPARATOR, output.toString());
     }
     
     @Test
     public void doNotSaveIfUserIsNotRegistered() throws IOException {
-        String output = executeCommand("Donald\nHello, world!");
-        assertEquals("ERROR\n", output.toString());
+        String output = executeCommand("Donald" + LINE_SEPARATOR + "Hello, world!");
+        assertEquals("ERROR" + LINE_SEPARATOR, output.toString());
         assertEquals(0, messageRepository.getMessages().size());
     }
     

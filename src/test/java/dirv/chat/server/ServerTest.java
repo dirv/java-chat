@@ -5,7 +5,6 @@ import org.junit.Test;
 import dirv.chat.Message;
 import dirv.chat.SocketStub;
 import dirv.chat.server.Server;
-
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServerTest {
+
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     private ServerSocketFactoryStub serverSocketFactory = new ServerSocketFactoryStub();
     private List<String> users = new ArrayList<String>();
@@ -72,9 +73,9 @@ public class ServerTest {
     
     @Test
     public void sendMessageAcknowledgement() {
-        SocketStub client = receiveClientMessage("1\nDonald\n");
+        SocketStub client = receiveClientMessage("1" + LINE_SEPARATOR + "Donald" + LINE_SEPARATOR);
         startListening();
-        assertEquals("OK\n", client.getOutput());
+        assertEquals("OK" + LINE_SEPARATOR, client.getOutput());
     }
 
     @Test
