@@ -64,7 +64,7 @@ public class Chat {
         }
     }
     
-    public Runnable buildBasedOn(String[] args) {
+    private Runnable buildBasedOn(String[] args) {
         String mode = args[0];
         if (mode.equals("server")) {
             int port = 3000;
