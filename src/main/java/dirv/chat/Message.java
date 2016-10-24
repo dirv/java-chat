@@ -25,8 +25,8 @@ public class Message {
     }
 
     public String asResponseString() {
-        return timestamp + "\n" +
-            user + "\n" +
-            message + "\n";
+        return timestamp + System.lineSeparator() +
+            user + System.lineSeparator() +
+            message + System.lineSeparator();
     }
 }

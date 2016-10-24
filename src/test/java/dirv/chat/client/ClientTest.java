@@ -34,7 +34,7 @@ public class ClientTest {
     @Test
     public void doesNotSendAnyMessagesIfRegistrationFailed() {
         setErrorOnRegistration();
-        client("Hello?\n").run();
+        client("Hello?" + System.lineSeparator()).run();
         assertEquals(0, messageSender.getMessagesSent().size());
     }
 
@@ -47,7 +47,7 @@ public class ClientTest {
 
     @Test
     public void sendsMessage() {
-        client("Hello, world!\n").run();
+        client("Hello, world!" + System.lineSeparator()).run();
         assertEquals(1, messageSender.getMessagesSent().size());
         assertEquals("Hello, world!", messageSender.getMessagesSent().get(0));
     }
@@ -67,7 +67,9 @@ public class ClientTest {
     
     @Test
     public void sendMultipleMessages() {
-        client("A\nB\nC\n").run();
+        String[] messages = new String[] { "A", "B", "C" };
+        String allMessages = String.join(System.lineSeparator(), messages);
+        client(allMessages).run();
         assertEquals(3, messageSender.getMessagesSent().size());
         assertEquals("A", messageSender.getMessagesSent().get(0));
         assertEquals("B", messageSender.getMessagesSent().get(1));
