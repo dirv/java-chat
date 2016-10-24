@@ -35,13 +35,13 @@ public class SaveMessageCommandTest extends CommandTest {
     public void acknowledgesSave() throws IOException {
         users.add("Donald");
         String output = executeCommand("Donald\nHello, world!");
-        assertEquals("OK\n", output.toString());
+        assertEquals("OK\r\n", output.toString());
     }
     
     @Test
     public void doNotSaveIfUserIsNotRegistered() throws IOException {
         String output = executeCommand("Donald\nHello, world!");
-        assertEquals("ERROR\n", output.toString());
+        assertEquals("ERROR\r\n", output.toString());
         assertEquals(0, messageRepository.getMessages().size());
     }
     

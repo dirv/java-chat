@@ -74,7 +74,7 @@ public class ServerTest {
     public void sendMessageAcknowledgement() {
         SocketStub client = receiveClientMessage("1\nDonald\n");
         startListening();
-        assertEquals("OK\n", client.getOutput());
+        assertEquals("OK\r\n", client.getOutput());
     }
 
     @Test

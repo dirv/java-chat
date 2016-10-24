@@ -22,7 +22,7 @@ public class DisplayTest {
         Message message = new Message(timestamp, "Donald", "Hello, world!");
         new Display(pw).message(message);
         
-        assertEquals("[2016-10-16 16:18:30] [Donald] Hello, world!\n", out.toString());
+        assertEquals("[2016-10-16 16:18:30] [Donald] Hello, world!\r\n", out.toString());
     }
     
     @Test
@@ -30,13 +30,13 @@ public class DisplayTest {
         Exception ex = new Exception("Test");
         new Display(pw).exception(ex);
         
-        assertEquals("An internal error occurred: Test\n", out.toString());
+        assertEquals("An internal error occurred: Test\r\n", out.toString());
     }
     
     @Test
     public void outputsErrorOnConsole() {
         new Display(pw).error("This is an error");
-        assertEquals("Error: This is an error\n", out.toString());
+        assertEquals("Error: This is an error\r\n", out.toString());
     }
     
 }

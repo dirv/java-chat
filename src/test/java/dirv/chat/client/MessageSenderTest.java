@@ -27,7 +27,7 @@ public class MessageSenderTest {
     @Test
     public void registersUser() throws IOException {
         buildMessageSender().register();
-        assertEquals("1\nDonald\n", socketFactory.getLastSocket().getOutput());
+        assertEquals("1\r\nDonald\r\n", socketFactory.getLastSocket().getOutput());
     }
     
     @Test
@@ -53,7 +53,7 @@ public class MessageSenderTest {
     @Test
     public void sendsMessageToServer() throws IOException {
         buildMessageSender().sendMessage("Message");
-        assertEquals("2\nDonald\nMessage\n", socketFactory.getLastSocket().getOutput());
+        assertEquals("2\r\nDonald\r\nMessage\r\n", socketFactory.getLastSocket().getOutput());
     }
     
     @Test
@@ -79,7 +79,7 @@ public class MessageSenderTest {
     @Test
     public void retrievesMessagesSinceTimestamp() throws IOException {
         buildMessageSender().retrieveMessagesSince(123);
-        assertEquals("3\n123\n", socketFactory.getLastSocket().getOutput());
+        assertEquals("3\r\n123\r\n", socketFactory.getLastSocket().getOutput());
     }
     
     @Test
