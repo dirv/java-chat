@@ -45,7 +45,7 @@ public class ServerListenerTest {
     
     @Test
     public void displaysEachMessageWhenRetrieved() {
-        messageSender = new MessageSenderStub(Arrays.asList(MESSAGE1, MESSAGE2));
+        setMessagesToReceive(MESSAGE1, MESSAGE2);
         serverListener().run();
         assertEquals(2, display.getMessagesShown().size());
         assertMessageEquals(MESSAGE1, display.getMessagesShown().get(0));
@@ -54,7 +54,7 @@ public class ServerListenerTest {
     
     @Test
     public void subsequentCallsUseLatestTimestampSeen() {
-        messageSender = new MessageSenderStub(Arrays.asList(MESSAGE1));
+        setMessagesToReceive(MESSAGE1);
         ServerListener serverListener = serverListener();
         serverListener.run();
         serverListener.run();
@@ -65,7 +65,7 @@ public class ServerListenerTest {
     public void startsAGameOfHangmanIfUserRequestsIt() {
         user = "bot";
         Message hangmanMessage = new Message(1, "user", "@bot hangman!");
-        messageSender = new MessageSenderStub(Arrays.asList(hangmanMessage));
+        setMessagesToReceive(hangmanMessage);
         serverListener().run();
         List<String> messagesSent = messageSender.getMessagesSent();
         assertEquals(1, messagesSent.size());
@@ -75,10 +75,49 @@ public class ServerListenerTest {
     @Test
     public void doesNotStartAGameOfHangmanIfUsernameIsNotPresent() {
         Message hangmanMessage = new Message(1, "user", "hangman!");
-        messageSender = new MessageSenderStub(Arrays.asList(hangmanMessage));
+        setMessagesToReceive(hangmanMessage);
         serverListener().run();
         List<String> messagesSent = messageSender.getMessagesSent();
         assertEquals(0, messagesSent.size());
+    }
+    
+    @Test
+    public void playsCorrectHangmanMove() {
+        user = "bot";
+        Message hangmanMessage = new Message(1, "user", "@bot hangman!");
+        Message hangmanGuess = new Message(1, "user", "@bot a");
+        setMessagesToReceive(hangmanMessage, hangmanGuess);
+        serverListener().run();
+        List<String> messagesSent = messageSender.getMessagesSent();
+        assertEquals(2, messagesSent.size());
+        assertEquals("_ _ _ A _ _ (8 lives left)", messagesSent.get(1));
+    }
+    
+    @Test
+    public void doesNotPlayMoveIfNotInAHangmanGame() {
+        user = "bot";
+        Message hangmanGuess = new Message(1, "user", "@bot a");
+        setMessagesToReceive(hangmanGuess);
+        serverListener().run();
+        List<String> messagesSent = messageSender.getMessagesSent();
+        assertEquals(0, messagesSent.size());
+    }
+    
+    @Test
+    public void doesNotStartANewGameIfOneIsInProgress() {
+        user = "bot";
+        Message hangmanGuess = new Message(1, "user", "@bot a");
+        Message hangmanMessage = new Message(1, "user", "@bot hangman!");
+        setMessagesToReceive(hangmanMessage, hangmanGuess, hangmanMessage);
+        serverListener().run();
+        List<String> messagesSent = messageSender.getMessagesSent();
+        assertEquals(3, messagesSent.size());
+        assertEquals("_ _ _ A _ _ (8 lives left)", messagesSent.get(2));
+    }
+    
+
+    private void setMessagesToReceive(Message... messages) {
+        messageSender = new MessageSenderStub(Arrays.asList(messages));
     }
 
     private ServerListener serverListener() {
