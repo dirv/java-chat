@@ -5,13 +5,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+//import dirv.chat.server.MessageRepository;
+
 public class RegisterUserCommand extends RecognizedCommand {
 
     private final List<String> users;
+//	private MessageRepository messageRepository;
 
-    public RegisterUserCommand(List<String> users) {
+    public RegisterUserCommand(List<String> users
+//    		,MessageRepository messageRepository
+    		) {
         super("1");
         this.users = users;
+//        this.messageRepository = messageRepository;
     }
 
     @Override
@@ -20,6 +26,7 @@ public class RegisterUserCommand extends RecognizedCommand {
 
         boolean added = attemptAdd(user);
         if(added) {
+//        	messageRepository.receiveMessage(user, "has logged on");
             printWriter.println("OK");
         } else {
             printWriter.println("ERROR");

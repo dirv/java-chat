@@ -9,10 +9,14 @@ import java.util.List;
 
 import org.junit.Test;
 
+import dirv.chat.server.MessageRepository;
 import dirv.chat.server.commands.Command;
 import dirv.chat.server.commands.RegisterUserCommand;
 
 public class RegisterUserCommandTest extends CommandTest {
+	
+//	private MessageRepository messageRepository;
+
 
     private final List<String> users = new ArrayList<String>();
 

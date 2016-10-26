@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import dirv.chat.server.commands.Command;
+import dirv.chat.server.commands.DisplayClientListCommand;
 import dirv.chat.server.commands.RegisterUserCommand;
 import dirv.chat.server.commands.RelayMessagesCommand;
 import dirv.chat.server.commands.SaveMessageCommand;
@@ -31,9 +32,11 @@ public class Server implements Runnable {
     
     private static List<Command> buildCommands(List<String> users, MessageRepository messageRepository) {
         return Arrays.asList(
+//                new RegisterUserCommand(users, messageRepository),
                 new RegisterUserCommand(users),
                 new SaveMessageCommand(messageRepository, users),
                 new RelayMessagesCommand(messageRepository),
+                new DisplayClientListCommand(users),
                 new UnknownCommand());
     }
 
