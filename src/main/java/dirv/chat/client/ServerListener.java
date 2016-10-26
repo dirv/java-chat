@@ -28,13 +28,12 @@ public class ServerListener implements Runnable {
     
     private void handleMessage(Message message) {
         updateTimestamp(message);
-        if (message.getMessage() == "hangman"){
+        if (message.getMessage().equals("hangman")){
         	try {
 				messageSender.sendMessage("Welcome to hangman");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-//        	MessageSender sendReply = new MessageSender(null, null, 0, null);
         }
         display.message(message);
     }
