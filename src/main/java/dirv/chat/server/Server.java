@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 
+import dirv.chat.client.Display;
 import dirv.chat.server.commands.Command;
 import dirv.chat.server.commands.RegisterUserCommand;
 import dirv.chat.server.commands.RelayMessagesCommand;
@@ -21,11 +22,17 @@ public class Server implements Runnable {
 
     private final ServerSocketFactory serverSocketFactory;
     private final List<Command> commands;
+    private final Display display;
     private final int port;
     
-    public Server(ServerSocketFactory serverSocketFactory, List<String> users, MessageRepository messageRepository, int port) {
+    public Server(ServerSocketFactory serverSocketFactory,
+            List<String> users,
+            MessageRepository messageRepository,
+            Display display,
+            int port) {
         this.serverSocketFactory = serverSocketFactory;
         this.port = port;
+        this.display = display;
         commands = buildCommands(users, messageRepository);
     }
     
@@ -42,7 +49,11 @@ public class Server implements Runnable {
             ServerSocket serverSocket = serverSocketFactory.buildServerSocket(port);
             Socket socket;
             while((socket = serverSocket.accept()) != null) {
-                handleSocket(socket);
+                try {
+                    handleSocket(socket);
+                } catch (IOException ex) {
+                    display.exception(ex);
+                }
             }
         } catch (IOException ex) {
             ex.printStackTrace();

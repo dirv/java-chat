@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import dirv.chat.Message;
 import dirv.chat.SocketStub;
+import dirv.chat.client.DisplayStub;
 import dirv.chat.server.Server;
 
 import static org.junit.Assert.*;
@@ -11,6 +12,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static dirv.chat.Assertions.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +22,7 @@ public class ServerTest {
     private ServerSocketFactoryStub serverSocketFactory = new ServerSocketFactoryStub();
     private List<String> users = new ArrayList<String>();
     private MessageRepositorySpy messageRepository = new MessageRepositorySpy();
+    private final DisplayStub display = new DisplayStub();
 
     @Test
     public void listensOnSpecifiedPort() throws IOException {
@@ -102,6 +105,38 @@ public class ServerTest {
         assertEqualsLines(expected, lastClient.getOutput());
     }
     
+    @Test
+    public void catchesClientSocketExceptions() {
+        IOException ex = new IOException();
+        addExceptionThrowingSocket(ex);
+        startListening();
+        
+        assertEquals(ex, display.getLastException());
+    }
+    
+    @Test
+    public void continuesProcessingSocketsAfterException() {
+        addExceptionThrowingSocket(new IOException());
+        SocketStub lastClient = receiveClientMessage("1", "Donald");
+        startListening();
+        assertNotEquals(0, lastClient.getOutput().length());
+    }
+    
+    private void addExceptionThrowingSocket(IOException ex) {
+        SocketStub socket = new SocketStub() {
+            @Override
+            public InputStream getInputStream() {
+                return new InputStream() {
+                    @Override
+                    public int read() throws IOException {
+                        throw ex;
+                    }
+                };
+            }
+        };
+        serverSocketFactory.addClient(socket);
+    }
+
     private void addMessage(long timestamp, String name, String message) {
         messageRepository.add(timestamp, name, message);
     }
@@ -119,7 +154,7 @@ public class ServerTest {
     }
 
     private void startListening(int port) {
-        Server server = new Server(serverSocketFactory, users, messageRepository, port);
+        Server server = new Server(serverSocketFactory, users, messageRepository, display, port);
         server.run();
     }
 

@@ -25,6 +25,7 @@ public class Chat {
             return new Server(new NetServerSocketFactory(),
                     new ArrayList<String>(),
                     new CappedMessageRepository(new Clock(), 200),
+                    new Display(System.out),
                     port);
         }
     };
