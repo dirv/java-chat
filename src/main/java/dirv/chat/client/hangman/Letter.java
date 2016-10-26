@@ -7,6 +7,9 @@ public class Letter {
 
     public Letter(String letter) {
         this.letter = letter;
+        if (!letter.matches("[a-zA-Z]")) {
+            this.wasGuessed = true;
+        }
     }
     
     public void guess(String guess) {
