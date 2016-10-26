@@ -1,9 +1,13 @@
 package dirv.chat.client.hangman;
 
-public class HangmanGame {
+import dirv.chat.client.Bot;
 
+public class HangmanGame implements Bot {
+    public void respondToMessage(String message) {
+    }
 
-    public String currentGuess() {
-        return "_ _ _ A _ _ (8 lives left)";
+    @Override
+    public String getState() {
+        return null;
     }
 }

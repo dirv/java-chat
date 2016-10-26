@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class ClientTest {
 
-    private final ServerListener serverListener = new ServerListener(null, null, "");
+    private final ServerListener serverListener = new ServerListener(null, null, "", null);
     private final ScheduledExecutorServiceSpy executor = new ScheduledExecutorServiceSpy();
     private MessageSenderStub messageSender = new MessageSenderStub();
     private final DisplayStub display = new DisplayStub();

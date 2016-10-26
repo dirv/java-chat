@@ -3,7 +3,6 @@ package dirv.chat.client;
 import java.io.IOException;
 
 import dirv.chat.Message;
-import dirv.chat.client.hangman.HangmanGame;
 
 public class ServerListener implements Runnable {
 
@@ -11,14 +10,13 @@ public class ServerListener implements Runnable {
     private final Display display;
     private long lastTimestampSeen = 0;
     private String user;
-    private boolean hangmanMode;
-    private HangmanGame hangman;
+    private BotRunner botRunner;
     
-    public ServerListener(MessageSender messageSender, Display display, String user) {
+    public ServerListener(MessageSender messageSender, Display display, String user, BotRunner botRunner) {
         this.messageSender = messageSender;
         this.display = display;
         this.user = user;
-        this.hangmanMode = false;
+        this.botRunner = botRunner;
     }
 
     @Override
@@ -34,23 +32,14 @@ public class ServerListener implements Runnable {
     
     private void handleMessage(Message message) {
         updateTimestamp(message);
-        performHangmanCommand(message);
+        performBotCommand(message);
         display.message(message);
     }
 
-    private void performHangmanCommand(Message message) {
+    private void performBotCommand(Message message) {
         if (message.isFor(user)) {
-            try {
-                String userMessage = message.getUserMessage();
-                if (userMessage.equals("hangman!") && hangman == null) {
-                        hangman = new HangmanGame();
-                        messageSender.sendMessage("_ _ _ _ _ _ (8 lives left)");
-                } else if (hangman != null) {
-                    messageSender.sendMessage(hangman.currentGuess());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            String userMessage = message.getUserMessage();
+            botRunner.respondToMessage(userMessage);
         }
     }
     
