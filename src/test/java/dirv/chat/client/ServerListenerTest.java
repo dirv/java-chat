@@ -16,6 +16,7 @@ public class ServerListenerTest {
 
     private MessageSenderStub messageSender = new MessageSenderStub();
     private DisplayStub display = new DisplayStub();
+    private Hangman hangman = new Hangman(messageSender);
 
     @Test
     public void implementsRunnable() {
@@ -62,14 +63,18 @@ public class ServerListenerTest {
     
     @Test
     public void startAGameOfHangman() {
-    	Message hangmanMessage = new Message(1, "user", "hangman");
-    	messageSender = new MessageSenderStub(Arrays.asList(hangmanMessage));
+    	messageSender = new MessageSenderStub(Arrays.asList(HANGMAN));
     	serverListener().run();
-    	List<String> messageSent = messageSender.getMessagesSent();
-    	System.out.println("message sent = " + messageSent); 
-    	assertEquals(1, messageSent.size());
+    	List<String> messageReceived = messageSender.getMessagesSent();
+    	assertEquals(2, messageReceived.size());
     	assertEquals("Welcome to hangman", messageSender.getMessagesSent().get(0));
+      	assertEquals("_ _ _ _ [8 lives remaining]", messageSender.getMessagesSent().get(1));
     }
+    
+    @Test
+    public void returnWordToGuess() {
+    	assertEquals("java", hangman.getHangmanDict());
+      }
     
     private ServerListener serverListener() {
         return new ServerListener(messageSender, display);

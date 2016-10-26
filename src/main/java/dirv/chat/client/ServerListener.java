@@ -29,11 +29,8 @@ public class ServerListener implements Runnable {
     private void handleMessage(Message message) {
         updateTimestamp(message);
         if (message.getMessage().equals("hangman")){
-        	try {
-				messageSender.sendMessage("Welcome to hangman");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+        		Hangman hangman = new Hangman(messageSender);
+        		hangman.startMessage();
         }
         display.message(message);
     }
