@@ -60,6 +60,17 @@ public class ServerListenerTest {
         assertEquals(MESSAGE1.getTimestamp(), messageSender.getLastTimestamp());
     }
     
+    @Test
+    public void startAGameOfHangman() {
+    	Message hangmanMessage = new Message(1, "user", "hangman");
+    	messageSender = new MessageSenderStub(Arrays.asList(hangmanMessage));
+    	serverListener().run();
+    	List<String> messageSent = messageSender.getMessagesSent();
+    	System.out.println("message sent = " + messageSent); 
+    	assertEquals(1, messageSent.size());
+    	assertEquals("Welcome to hangman", messageSender.getMessagesSent().get(0));
+    }
+    
     private ServerListener serverListener() {
         return new ServerListener(messageSender, display);
     }
