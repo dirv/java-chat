@@ -11,6 +11,8 @@ import dirv.chat.client.MessageSender;
 import dirv.chat.client.NetSocketFactory;
 import dirv.chat.client.ServerListener;
 import dirv.chat.client.hangman.HangmanGameBotFactory;
+import dirv.chat.client.hangman.Phrases;
+import dirv.chat.client.hangman.RandomPhraseChooser;
 import dirv.chat.server.CappedMessageRepository;
 import dirv.chat.server.NetServerSocketFactory;
 import dirv.chat.server.Server;
@@ -35,7 +37,7 @@ public class Chat {
         @Override
         public Runnable build(String address, int port, String user) {
             MessageSender messageSender = new MessageSender(new NetSocketFactory(), address, port, user);
-            BotRunner botRunner = new BotRunner(messageSender, new HangmanGameBotFactory());
+            BotRunner botRunner = new BotRunner(messageSender, new HangmanGameBotFactory(new RandomPhraseChooser(), Phrases.all));
             Display display = new Display(System.out);
             return new Client(Executors.newScheduledThreadPool(1),
                     new ServerListener(messageSender, display, user, botRunner),
