@@ -7,7 +7,7 @@ public class HangmanGameBotFactory implements BotFactory {
 
     @Override
     public Bot buildBot() {
-        return new HangmanGame();
+        return new HangmanGame(Phrases.all[0]);
     }
 
 }

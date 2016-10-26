@@ -1,5 +1,6 @@
 package dirv.chat.client.hangman;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.*;
@@ -7,13 +8,12 @@ import dirv.chat.client.Bot;
 
 public class HangmanGame implements Bot {
 
-    private char[] letters = "DONALD".toCharArray();
-    private char[] guesses = "______".toCharArray();
     private int lives = 8;
-    private final List<Letter> lettersList;
+    private final List<Letter> letters;
+    private final List<String> badGuesses = new ArrayList<>();
     
-    public HangmanGame() {
-        this.lettersList = Arrays.asList("DONALD".split(""))
+    public HangmanGame(String phrase) {
+        this.letters = Arrays.asList(phrase.toUpperCase().split(""))
                 .stream()
                 .map(l->new Letter(l))
                 .collect(Collectors.toList());
@@ -27,21 +27,24 @@ public class HangmanGame implements Bot {
         
         String guess = message.toUpperCase();
         
-        lettersList
+        letters
             .stream()
             .forEach(l -> l.guess(guess));
-        boolean anyFound = lettersList
+        boolean anyFound = letters
                 .stream() 
                 .anyMatch(Letter::wasGuessed);
 
         if (!anyFound) {
-            lives--;
+            if (!badGuesses.contains(guess)) {
+                badGuesses.add(guess);
+                lives--;
+            }
         }
     }
 
     @Override
     public String getState() {
-        List<String> output = lettersList.stream().map(Letter::toString).collect(Collectors.toList());
+        List<String> output = letters.stream().map(Letter::toString).collect(Collectors.toList());
         String state = String.join(" ", output);
         state += " (" + lives + " lives left)";
         if (allGuessed()) {
@@ -54,6 +57,6 @@ public class HangmanGame implements Bot {
     }
     
     private boolean allGuessed() {
-        return lettersList.stream().allMatch(Letter::wasGuessed);
+        return letters.stream().allMatch(Letter::wasGuessed);
     }
 }

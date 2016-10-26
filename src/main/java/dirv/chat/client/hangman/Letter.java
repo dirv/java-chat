@@ -9,12 +9,10 @@ public class Letter {
         this.letter = letter;
     }
     
-    public boolean guess(String guess) {
-        if (wasGuessed) return false;
+    public void guess(String guess) {
         if (guess.equals(letter)) {
             wasGuessed = true;
         }
-        return wasGuessed;
     }
     
     public boolean wasGuessed() {
