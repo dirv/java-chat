@@ -16,6 +16,7 @@ public class ServerListenerTest {
 
     private MessageSenderStub messageSender = new MessageSenderStub();
     private DisplayStub display = new DisplayStub();
+    private String user;
 
     @Test
     public void implementsRunnable() {
@@ -60,7 +61,27 @@ public class ServerListenerTest {
         assertEquals(MESSAGE1.getTimestamp(), messageSender.getLastTimestamp());
     }
     
+    @Test
+    public void startsAGameOfHangmanIfUserRequestsIt() {
+        user = "bot";
+        Message hangmanMessage = new Message(1, "user", "@bot hangman!");
+        messageSender = new MessageSenderStub(Arrays.asList(hangmanMessage));
+        serverListener().run();
+        List<String> messagesSent = messageSender.getMessagesSent();
+        assertEquals(1, messagesSent.size());
+        assertEquals("_ _ _ _ _ _ (8 lives left)", messagesSent.get(0));
+    }
+    
+    @Test
+    public void doesNotStartAGameOfHangmanIfUsernameIsNotPresent() {
+        Message hangmanMessage = new Message(1, "user", "hangman!");
+        messageSender = new MessageSenderStub(Arrays.asList(hangmanMessage));
+        serverListener().run();
+        List<String> messagesSent = messageSender.getMessagesSent();
+        assertEquals(0, messagesSent.size());
+    }
+
     private ServerListener serverListener() {
-        return new ServerListener(messageSender, display);
+        return new ServerListener(messageSender, display, user);
     }
 }

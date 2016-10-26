@@ -35,7 +35,7 @@ public class Chat {
             MessageSender messageSender = new MessageSender(new NetSocketFactory(), address, port, user);
             Display display = new Display(System.out);
             return new Client(Executors.newScheduledThreadPool(1),
-                    new ServerListener(messageSender, display),
+                    new ServerListener(messageSender, display, user),
                     messageSender,
                     display,
                     System.in);
