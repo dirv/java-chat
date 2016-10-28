@@ -13,6 +13,10 @@ import dirv.chat.server.commands.Command;
 public abstract class CommandTest {
     protected abstract Command command();
 
+    protected String executeCommand(String... input) throws IOException {
+        return executeCommand(String.join(System.lineSeparator(), input));
+    }
+
     protected String executeCommand(String input) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         try(BufferedReader reader = reader(input)) {

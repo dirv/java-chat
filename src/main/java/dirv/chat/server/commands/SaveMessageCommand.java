@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import dirv.chat.server.MessageRepository;
 
@@ -25,8 +26,16 @@ public class SaveMessageCommand extends RecognizedCommand {
             printWriter.println("ERROR");
             return;
         }
-        String message = reader.readLine();
+        int length = Integer.parseInt(reader.readLine());
+        String message = readStringOfLength(length, reader);
+        reader.readLine();
         messageRepository.receiveMessage(user,  message);
         printWriter.println("OK");
+    }
+
+    private String readStringOfLength(int length, BufferedReader reader) throws IOException {
+        char[] bytes = new char[length];
+        reader.read(bytes, 0, length);
+        return new String(bytes);
     }
 }

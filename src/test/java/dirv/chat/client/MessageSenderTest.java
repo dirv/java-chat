@@ -55,7 +55,7 @@ public class MessageSenderTest {
     @Test
     public void sendsMessageToServer() throws IOException {
         buildMessageSender().sendMessage("Message");
-        List<String> expected = Arrays.asList("2", "Donald", "Message");
+        List<String> expected = Arrays.asList("2", "Donald", "7", "Message");
         assertEqualsLines(expected, socketFactory.getLastSocket().getOutput());
     }
     

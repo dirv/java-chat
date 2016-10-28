@@ -27,6 +27,7 @@ public class Message {
     public String asResponseString() {
         return timestamp + System.lineSeparator() +
             user + System.lineSeparator() +
+            message.getBytes().length + System.lineSeparator() +
             message + System.lineSeparator();
     }
 }

@@ -29,9 +29,11 @@ public class RelayMessagesCommandTest extends CommandTest {
         int cur = 0;
         assertEquals("200", lines[cur++]);
         assertEquals("Donald", lines[cur++]);
+        assertEquals("13", lines[cur++]);
         assertEquals("Hello, world!", lines[cur++]);
         assertEquals("201", lines[cur++]);
         assertEquals("Donald", lines[cur++]);
+        assertEquals("6", lines[cur++]);
         assertEquals("Hello?", lines[cur++]);
         
     }

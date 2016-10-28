@@ -48,7 +48,7 @@ public class ServerTest {
     @Test
     public void receiveMessages() throws IOException {
         users.add("Donald");
-        receiveClientMessage("2", "Donald", "Hello, world!");
+        receiveClientMessage("2", "Donald", "13", "Hello, world!");
         startListening();
         assertEquals(1, messageRepository.getMessages().size());
         assertEquals("Donald", message(0).getUser());
@@ -89,19 +89,19 @@ public class ServerTest {
         SocketStub client = receiveClientMessage("3", "2");
         startListening();
         List<String> expected = Arrays.asList(
-                "100", "Donald", "Hello, world!",
-                "200", "Donald", "Hello?");
+                "100", "Donald", "13", "Hello, world!",
+                "200", "Donald", "6", "Hello?");
         assertEqualsLines(expected, client.getOutput());
     }
     
     @Test
     public void handlesMultipleClients() {
-        receiveClientMessage("1", "Donald");
-        receiveClientMessage("2", "Donald", "Hello, world!");
+        receiveClientMessage("1", "Donald", "0");
+        receiveClientMessage("2", "Donald", "13", "Hello, world!");
         SocketStub lastClient = receiveClientMessage("3", "0");
         startListening();
         List<String> expected = Arrays.asList(
-                "-1", "Donald", "Hello, world!");
+                "-1", "Donald", "13", "Hello, world!");
         assertEqualsLines(expected, lastClient.getOutput());
     }
     

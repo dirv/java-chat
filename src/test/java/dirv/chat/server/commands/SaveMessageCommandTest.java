@@ -24,25 +24,33 @@ public class SaveMessageCommandTest extends CommandTest {
     
     @Test
     public void savesMessage() throws IOException {
-       users.add("Donald");
-       executeCommand("Donald\nHello, world!");
-       Message message = messageRepository.getMessages().get(0);
-       assertEquals("Donald", message.getUser());
-       assertEquals("Hello, world!", message.getMessage());
+        users.add("Donald");
+        executeCommand("Donald", "13", "Hello, world!");
+        Message message = messageRepository.getMessages().get(0);
+        assertEquals("Donald", message.getUser());
+        assertEquals("Hello, world!", message.getMessage());
     }
     
     @Test
     public void acknowledgesSave() throws IOException {
         users.add("Donald");
-        String output = executeCommand("Donald\nHello, world!");
+        String output = executeCommand("Donald", "13", "Hello, world!");
         assertEquals("OK\n", output.toString());
     }
     
     @Test
     public void doNotSaveIfUserIsNotRegistered() throws IOException {
-        String output = executeCommand("Donald\nHello, world!");
+        String output = executeCommand("Donald", "13", "Hello, world!");
         assertEquals("ERROR\n", output.toString());
         assertEquals(0, messageRepository.getMessages().size());
+    }
+    
+    @Test
+    public void canSaveMultilineMessages() throws IOException {
+        users.add("Donald");
+        executeCommand("Donald", "12", "Hello", "world!");
+        Message message = messageRepository.getMessages().get(0);
+        assertEquals("Hello" + System.lineSeparator() + "world!", message.getMessage());
     }
     
     protected Command command() {

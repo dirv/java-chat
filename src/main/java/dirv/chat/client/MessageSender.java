@@ -43,6 +43,7 @@ public class MessageSender {
             BufferedReader reader = bufferedReader(socket)) {
             printWriter.println("2");
             printWriter.println(user);
+            printWriter.println(message.length());
             printWriter.println(message);
             printWriter.flush();
             return checkResponse(reader);
@@ -73,7 +74,9 @@ public class MessageSender {
         List<Message> messages = new ArrayList<>();
         while((timestamp = reader.readLine()) != null) {
             String user = reader.readLine();
-            String message = reader.readLine();
+            int length = Integer.parseInt(reader.readLine());
+            String message = readStringOfLength(length, reader);
+            reader.read();
             messages.add(
                 new Message(Long.parseLong(timestamp),
                     user,
@@ -81,6 +84,13 @@ public class MessageSender {
         }
         return messages;
     }
+    
+    private String readStringOfLength(int length, BufferedReader reader) throws IOException {
+        char[] bytes = new char[length];
+        reader.read(bytes, 0, length);
+        return new String(bytes);
+    }
+
     private static BufferedReader bufferedReader(Socket socket) throws IOException {
         return new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
