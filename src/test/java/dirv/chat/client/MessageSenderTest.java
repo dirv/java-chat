@@ -5,6 +5,7 @@ import static dirv.chat.client.Examples.*;
 import static dirv.chat.Assertions.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -29,7 +30,8 @@ public class MessageSenderTest {
     @Test
     public void registersUser() throws IOException {
         buildMessageSender().register();
-        assertEquals("1" + LINE_SEPARATOR + "Donald" + LINE_SEPARATOR, socketFactory.getLastSocket().getOutput());
+        List<String> expected = Arrays.asList("1", "Donald");
+        assertEqualsLines(expected, socketFactory.getLastSocket().getOutput());
     }
     
     @Test
@@ -40,14 +42,14 @@ public class MessageSenderTest {
     
     @Test
     public void returnsTrueIfRegisteredUser() throws IOException {
-        socketFactory.setResponse("OK\n");
+        socketFactory.setResponse(toLine("OK"));
         boolean successfullyRegistered = buildMessageSender().register();
         assertTrue(successfullyRegistered);
     }
     
     @Test
     public void returnsFalseIfDidNotRegisterUser() throws IOException {
-        socketFactory.setResponse("ERROR\n");
+        socketFactory.setResponse(toLine("ERROR"));
         boolean successfullyRegistered = buildMessageSender().register();
         assertFalse(successfullyRegistered);
     }
@@ -55,7 +57,8 @@ public class MessageSenderTest {
     @Test
     public void sendsMessageToServer() throws IOException {
         buildMessageSender().sendMessage("Message");
-        assertEquals("2" + LINE_SEPARATOR + "Donald" + LINE_SEPARATOR + "Message" + LINE_SEPARATOR, socketFactory.getLastSocket().getOutput());
+        List<String> expected = Arrays.asList("2", "Donald", "Message");
+        assertEqualsLines(expected, socketFactory.getLastSocket().getOutput());
     }
     
     @Test
@@ -66,14 +69,14 @@ public class MessageSenderTest {
     
     @Test
     public void returnsTrueIfSentMessage() throws IOException {
-        socketFactory.setResponse("OK\n");
+        socketFactory.setResponse(toLine("OK"));
         boolean successfullySent = buildMessageSender().sendMessage("Message");
         assertTrue(successfullySent);
     }
 
     @Test
     public void returnsFalseIfDidNotSendMessage() throws IOException {
-        socketFactory.setResponse("ERROR\n");
+        socketFactory.setResponse(toLine("ERROR"));
         boolean successfullySent = buildMessageSender().sendMessage("Message");
         assertFalse(successfullySent);
     }
@@ -81,7 +84,8 @@ public class MessageSenderTest {
     @Test
     public void retrievesMessagesSinceTimestamp() throws IOException {
         buildMessageSender().retrieveMessagesSince(123);
-        assertEquals("3" + LINE_SEPARATOR + "123" + LINE_SEPARATOR, socketFactory.getLastSocket().getOutput());
+        List<String> expected = Arrays.asList("3", "123");
+        assertEqualsLines(expected, socketFactory.getLastSocket().getOutput());
     }
     
     @Test
@@ -101,5 +105,9 @@ public class MessageSenderTest {
     
     private MessageSender buildMessageSender() {
         return new MessageSender(socketFactory, serverAddress, serverPort, "Donald");
+    }
+    
+    private String toLine(String message) {
+        return message + System.lineSeparator();
     }
 }

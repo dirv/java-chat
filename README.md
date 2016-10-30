@@ -46,7 +46,7 @@ If the name is already in use you will see an error.
 
 * Helpful stdout messages for both client and server
 * Alert users when someone registers
-* Disconnect message and alert user leaves
+* Disconnect message and alert when a user leaves
 * Ping message that auto-disconnects after a period of silence
 
 ### More involved

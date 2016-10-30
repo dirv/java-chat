@@ -7,9 +7,11 @@ import dirv.chat.SocketStub;
 import dirv.chat.server.Server;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
+import static dirv.chat.Assertions.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServerTest {
@@ -36,7 +38,7 @@ public class ServerTest {
     
     @Test
     public void connectsANewClient() throws IOException {
-        receiveClientMessage("1\nDonald\n");
+        receiveClientMessage("1", "Donald");
         startListening();
         assertThat(users, hasItem("Donald"));
     }
@@ -44,7 +46,7 @@ public class ServerTest {
     @Test
     public void receiveMessages() throws IOException {
         users.add("Donald");
-        receiveClientMessage("2\nDonald\nHello, world!\n");
+        receiveClientMessage("2", "Donald", "Hello, world!");
         startListening();
         assertEquals(1, messageRepository.getMessages().size());
         assertEquals("Donald", message(0).getUser());
@@ -53,27 +55,27 @@ public class ServerTest {
     
     @Test
     public void doNotSendAMessageOnUserRegistration() throws IOException {
-        receiveClientMessage("1\nDonald\n");
+        receiveClientMessage("1", "Donald");
         startListening();
         assertEquals(0, messageRepository.getMessages().size());
     }
     
     @Test
     public void doNotAddAUserOnMessageSend() {
-        receiveClientMessage("2\nDonald\nHello, world!");
+        receiveClientMessage("2", "Donald", "Hello, world!");
         startListening();
         assertEquals(0, users.size());
     }
     
     @Test
     public void ignoresUnrecognizedCommands() {
-        receiveClientMessage("x\n");
+        receiveClientMessage("x");
         startListening();
     }
     
     @Test
     public void sendMessageAcknowledgement() {
-        SocketStub client = receiveClientMessage("1" + LINE_SEPARATOR + "Donald" + LINE_SEPARATOR);
+        SocketStub client = receiveClientMessage("1", "Donald");
         startListening();
         assertEquals("OK" + LINE_SEPARATOR, client.getOutput());
     }
@@ -82,37 +84,33 @@ public class ServerTest {
     public void sendMessagesFromTimestamp() {
         addMessage(100, "Donald", "Hello, world!");
         addMessage(200, "Donald", "Hello?");
-        SocketStub client = receiveClientMessage("3\n2\n");
+        SocketStub client = receiveClientMessage("3", "2");
         startListening();
-        assertEquals(
-        "100\n" +
-        "Donald\n" +
-        "Hello, world!\n" +
-        "200\n" +
-        "Donald\n" +
-        "Hello?\n",
-                client.getOutput());
+        List<String> expected = Arrays.asList(
+                "100", "Donald", "Hello, world!",
+                "200", "Donald", "Hello?");
+        assertEqualsLines(expected, client.getOutput());
     }
     
     @Test
     public void handlesMultipleClients() {
-        receiveClientMessage("1\nDonald\n");
-        receiveClientMessage("2\nDonald\nHello, world!\n");
-        SocketStub lastClient = receiveClientMessage("3\n0\n");
+        receiveClientMessage("1", "Donald");
+        receiveClientMessage("2", "Donald", "Hello, world!");
+        SocketStub lastClient = receiveClientMessage("3", "0");
         startListening();
-        assertEquals(
-                "-1\n" +
-                "Donald\n" + 
-                "Hello, world!\n", lastClient.getOutput());
-        
+        List<String> expected = Arrays.asList(
+                "-1", "Donald", "Hello, world!");
+        assertEqualsLines(expected, lastClient.getOutput());
     }
     
     private void addMessage(long timestamp, String name, String message) {
         messageRepository.add(timestamp, name, message);
     }
 
-    private SocketStub receiveClientMessage(String message) {
-        SocketStub client = new SocketStub(message);
+    private SocketStub receiveClientMessage(String... message) {
+        String allLines = String.join(System.lineSeparator(), message)
+                + System.lineSeparator();
+        SocketStub client = new SocketStub(allLines);
         serverSocketFactory.addClient(client);
         return client;
     }

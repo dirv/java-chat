@@ -2,6 +2,8 @@ package dirv.chat;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 public class Assertions {
 
     private final static String PREFIX = "Message was not as expected: ";
@@ -14,6 +16,16 @@ public class Assertions {
             fail(format(PREFIX + "message was", expected.getUser(), actual.getUser()));
     }
     
+    public static void assertEqualsLines(List<String> expected, String actual) {
+        String allExpected = String.join(System.lineSeparator(), expected)
+                + System.lineSeparator();
+        assertEquals(allExpected, actual);
+    }
+
+    public static void assertEqualsLine(String expected, String actual) {
+        assertEquals(expected + System.lineSeparator(), actual);
+    }
+
     private static String format(String prefix, Object expected, Object actual) {
         return prefix + " " + actual + " but expected " + expected;
     }
