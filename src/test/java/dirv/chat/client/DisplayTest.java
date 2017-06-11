@@ -12,6 +12,8 @@ import org.junit.Test;
 
 public class DisplayTest {
 
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
     private final PrintStream pw = new PrintStream(out);
     

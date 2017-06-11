@@ -17,8 +17,8 @@ public class Chat {
 
     private static String usage = 
             "Usage for server: java -jar chat.jar server <port>   (default is 3000)\n"+
-            "Usage for client: java -jar chat.jar <address> <port> <your name>\n"+
-            " e.g. java -jar chat 127.0.0.1 3000 Donald\n";
+            "Usage for client: java -jar chat.jar client <address> <port> <your name>\n"+
+            " e.g. java -jar chat.jar client 127.0.0.1 3000 Donald\n";
     private static final ServerFactory realServerFactory = new ServerFactory() {
         @Override
         public Runnable build(int port) {

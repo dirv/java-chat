@@ -14,7 +14,9 @@ import dirv.chat.Message;
 
 public class MessageSenderTest {
     
-    private SocketFactoryStub socketFactory = new SocketFactoryStub();
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+	private SocketFactoryStub socketFactory = new SocketFactoryStub();
     private final String serverAddress = "1.2.3.4";
     private final int serverPort = 3000;
 
