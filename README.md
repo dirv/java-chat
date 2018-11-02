@@ -5,7 +5,7 @@ A console-based chat client & server, built using strong TDD throughout. It uses
 This is a teaching application designed to show how real-world applications can be structured. There are a number of areas in which the application can be extended, and you are encouraged to do so in your own fork. Suggestions for improvements are listed below.
 
 
-## Prerequisities
+## Prerequisites
 
 * JDK 8
 * Maven
